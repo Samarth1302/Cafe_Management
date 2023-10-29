@@ -9,7 +9,6 @@ const Signup = () => {
   const [uname, setUname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
-  const [role, setRole] = useState("");
   const router = useRouter();
 
   useEffect(() => {}, []);
@@ -24,13 +23,10 @@ const Signup = () => {
     if (e.target.name == "password") {
       setPass(e.target.value);
     }
-    if (e.target.name == "role") {
-      setRole(e.target.value);
-    }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { uname, email, password, role };
+    const data = { uname, email, password };
     // const response = await fetch();
     // const result = await response.json();
     setEmail("");
@@ -138,24 +134,6 @@ const Signup = () => {
                     required=""
                   />
                 </div>
-                <div>
-                  <label
-                    htmlFor="role"
-                    className="block mb-2 text-sm font-medium text-gray-900 "
-                  >
-                    Role
-                  </label>
-                  <select
-                    onChange={handleChange}
-                    name="role"
-                    id="role"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-                  >
-                    <option value="customer">Customer</option>
-                    <option value="employee">Employee</option>
-                    <option value="admin">Admin</option>
-                  </select>
-                </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-start">
                     <div className="flex items-center h-5">
@@ -185,7 +163,7 @@ const Signup = () => {
                   Already a registered user ?{" "}
                   <Link href="/login" legacyBehavior>
                     <a className="font-semibold text-blue-700 text-primary-600 hover:underline ">
-                      Sign in
+                      Login
                     </a>
                   </Link>
                 </p>
