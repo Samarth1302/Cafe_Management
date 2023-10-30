@@ -7,7 +7,7 @@ const Footer = () => {
   const [foot, setFoot] = useState(true);
 
   useEffect(() => {
-    let nonFoot = ["/login", "/signup"];
+    let nonFoot = ["/login", "/signup", "/"];
     if (nonFoot.includes(router.pathname)) {
       setFoot(false);
     }
