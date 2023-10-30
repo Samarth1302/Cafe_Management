@@ -144,7 +144,7 @@ const Login = () => {
                     </div>
                     <div className="ml-3 text-sm">
                       <label htmlFor="remember" className="text-white">
-                        Remember me
+                        Remember
                       </label>
                     </div>
                   </div>
@@ -163,7 +163,7 @@ const Login = () => {
                     Login
                   </button>
                 </div>
-                <p className="text-sm font-medium text-white ">
+                <p className="text-center text-sm font-medium text-white ">
                   Don't have an account yet ?{" "}
                   <Link href="/signup" legacyBehavior>
                     <a className="font-semibold text-white text-primary-600 hover:underline ">

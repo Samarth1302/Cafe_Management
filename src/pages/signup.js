@@ -69,7 +69,7 @@ const Signup = () => {
         theme="light"
       />
       <section className="bg-black">
-        <div className=" min-h-screen flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className=" min-h-full flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-black rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-yellow-300 md:text-2xl  ">
@@ -147,19 +147,21 @@ const Signup = () => {
                     </div>
                     <div className="ml-3 text-sm">
                       <label htmlFor="remember" className="text-white">
-                        Remember me
+                        Remember
                       </label>
                     </div>
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 
     focus:outline-none focus:ring-yellow-200 font-medium rounded-lg text-base px-7 py-2 text-center"
-                >
-                  Sign-Up
-                </button>
-                <p className="text-sm font-medium text-white ">
+                  >
+                    Sign-Up
+                  </button>
+                </div>
+                <p className=" text-center text-sm font-medium text-white ">
                   Already a registered user ?{" "}
                   <Link href="/login" legacyBehavior>
                     <a className="font-semibold text-white text-primary-600 hover:underline ">
