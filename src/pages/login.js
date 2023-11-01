@@ -86,7 +86,7 @@ const Login = () => {
       <section className="bg-black">
         <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto md:h-screen lg:py-0">
           <div className="w-full rounded-lg shadow  md:mt-24 sm:max-w-md xl:p-0">
-            <div className="p-4 relative space-y-8 md:space-y-2 sm:p-8 border  rounded-lg outline-gray-600">
+            <div className="p-4 relative space-y-8 md:space-y-2 sm:p-8 border  rounded-lg">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-yellow-300 md:text-2xl ">
                 LOGIN
               </h1>
