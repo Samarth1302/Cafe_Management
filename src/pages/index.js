@@ -11,7 +11,7 @@ export default function Home() {
         <meta name="keywords" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className></div>
+      <div></div>
     </>
   );
 }

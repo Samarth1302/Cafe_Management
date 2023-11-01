@@ -31,7 +31,6 @@ const Navbar = (
     setSidebar(!sidebar);
   };
   const ref = useRef();
-
   const iconStyle = {
     color: "yellow",
   };
@@ -39,15 +38,20 @@ const Navbar = (
   return (
     <>
       <div
-        className={`flex flex-col md:flex-row md:justify-start justify-center items-center py-2 shadow-md sticky top-0 z-10 pb-6 bg-black ${
+        className={`flex flex-col md:flex-row md:justify-start justify-center items-start py-2 shadow-md sticky top-0 z-10 pb-6 bg-black ${
           !sidebar && "overflow-hidden"
         }`}
       >
-        <div className="logo mx-2 mr-auto md:mx-2">
-          <Link href={"/"}></Link>
+        <div className="relative top-2 left-10 mx-2 flex content-end items-center mr-auto md:mx-2">
+          <Link href={"/"}>
+            <div className=" text-yellow-400 text-3xl">MICRO CAFE</div>
+          </Link>
         </div>
-        <div className="nav text-yellow-400 text-lg">MICRO CAFE</div>
-        <div className="cart items-center cursor-pointer absolute right-0 top-4 mx-5 flex">
+        <div
+          className={`cart items-center cursor-pointer absolute right-16 ${
+            sidebar && "right-60"
+          } top-5 mx-5 flex`}
+        >
           <BsCart2
             onClick={toggleCart}
             className=" text-xl md:text-2xl"
@@ -63,11 +67,21 @@ const Navbar = (
           )}
           {!user.value && (
             <Link href={"/login"}>
-              <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm text-black mx-4">
+              <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4">
                 Login / Sign-up
               </button>
             </Link>
           )}{" "}
+          {user.value && (
+            <Link href={"/"}>
+              <button
+                onClick={logout}
+                className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4"
+              >
+                Logout
+              </button>
+            </Link>
+          )}
         </div>
         <div
           ref={ref}
