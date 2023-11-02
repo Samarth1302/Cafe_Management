@@ -2,19 +2,27 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
 const Signup = () => {
-  const [uname, setUname] = useState("");
+  const [username, setUname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
   const router = useRouter();
 
-  useEffect(() => {}, []);
+  const REGISTER_USER = gql`
+    mutation Signup($signupInput: signupInput) {
+      signup(signupInput: $signupInput) {
+        token
+      }
+    }
+  `;
 
+  const [registerUser] = useMutation(REGISTER_USER);
   const handleChange = (e) => {
-    if (e.target.name == "uname") {
+    if (e.target.name == "username") {
       setUname(e.target.value);
     }
     if (e.target.name == "email") {
@@ -26,35 +34,65 @@ const Signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { uname, email, password };
-    // const response = await fetch();
-    // const result = await response.json();
+    try {
+      const { data } = await registerUser({
+        variables: {
+          signupInput: { email: email, password: password, username: username },
+        },
+      });
+      if (data.signup.token) {
+        localStorage.setItem("myUser", JSON.stringify(data.signup.token));
+        toast.success("Logged in successfully", {
+          position: "top-left",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          router.push(process.env.NEXT_PUBLIC_HOST);
+        }, 1000);
+      } else {
+        toast.error("Email already registered, please login", {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    } catch (error) {
+      console.error("Error during Signup:", error);
+      toast.error("Server Error", {
+        position: "top-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
     setEmail("");
     setUname("");
     setPass("");
-    toast.success("You are now a registered user. Please login now", {
-      position: "top-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-    setTimeout(() => {
-      router.push("/login");
-    }, 3000);
   };
   return (
     <div>
       <Head>
         <title>Signup - Cafe-Management</title>
         <meta
-          uname="viewport"
+          username="viewport"
           content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
         />
-        <meta uname="keywords" content="food order cafe eat" />
+        <meta username="keywords" content="food order cafe eat" />
       </Head>
       <ToastContainer
         position="top-left"
@@ -82,7 +120,7 @@ const Signup = () => {
               >
                 <div>
                   <label
-                    htmlFor="uname"
+                    htmlFor="username"
                     className="block mb-2 text-sm font-medium text-white"
                   >
                     Username
@@ -90,10 +128,10 @@ const Signup = () => {
                   <input
                     onChange={handleChange}
                     type="text"
-                    name="uname"
-                    id="uname"
-                    value={uname}
-                    className="bg-black border-white-300 border-2 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                    name="username"
+                    id="username"
+                    value={username}
+                    className="bg-black border-white-300 border-2 text-white 0 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="user123"
                     required=""
                   />
@@ -111,7 +149,7 @@ const Signup = () => {
                     name="email"
                     id="email"
                     value={email}
-                    className="bg-black border-white-300 border-2 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                    className="bg-black border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
                     placeholder="name@company.com"
                     required=""
                   />
@@ -130,7 +168,7 @@ const Signup = () => {
                     id="password"
                     value={password}
                     placeholder="••••••••"
-                    className="bg-black border-white-300 border-2 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                    className="bg-black border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
                     required=""
                   />
                 </div>

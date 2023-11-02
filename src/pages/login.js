@@ -73,6 +73,8 @@ const Login = () => {
         theme: "light",
       });
     }
+    setEmail("");
+    setPass("");
   };
   return (
     <div>
