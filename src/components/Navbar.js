@@ -38,19 +38,21 @@ const Navbar = (
   return (
     <>
       <div
-        className={`flex flex-col md:flex-row md:justify-start justify-center items-start py-2 shadow-md sticky top-0 z-10 pb-6 bg-black ${
+        className={`flex flex-col md:justify-start sm:justify-center items-start  py-2 shadow-md sticky top-0 z-10 pb-4 pt-4 bg-black ${
           !sidebar && "overflow-hidden"
         }`}
       >
-        <div className="relative top-2 left-10 mx-2 flex content-end items-center mr-auto md:mx-2">
+        <div className="relative left-10 mx-2 flex content-end md:mx-2">
           <Link href={"/"}>
-            <div className=" text-yellow-400 text-3xl">MICRO CAFE</div>
+            <div className=" text-yellow-400 md:text-3xl sm:text-sm">
+              MICRO CAFE
+            </div>
           </Link>
         </div>
         <div
-          className={`cart items-center cursor-pointer absolute right-16 ${
-            sidebar && "right-60"
-          } top-5 mx-5 flex`}
+          className={`cart items-center   cursor-pointer absolute md:right-16  ${
+            sidebar && "md:right-60 sm:right-2"
+          } md:top-5 sm:top-6 ml-40  flex`}
         >
           <BsCart2
             onClick={toggleCart}
@@ -66,11 +68,10 @@ const Navbar = (
             </Link>
           )}
           {!user.value && (
-            <Link href={"/login"}>
-              <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4">
-                Login / Sign-up
-              </button>
-            </Link>
+            <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4">
+              <Link href={"/login"}>Login</Link> /{" "}
+              <Link href={"/signup"}>Sign-up</Link>
+            </button>
           )}{" "}
           {user.value && (
             <Link href={"/"}>
