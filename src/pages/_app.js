@@ -6,6 +6,12 @@ import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  ApolloProvider,
+} from "@apollo/client";
 
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
@@ -16,6 +22,12 @@ export default function App({ Component, pageProps }) {
 
   const [progress, setProgress] = useState(0);
 
+  const client = new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BACKEND_URI,
+    }),
+    cache: new InMemoryCache(),
+  });
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
       setProgress(40);
@@ -138,15 +150,17 @@ export default function App({ Component, pageProps }) {
           logout={logout}
         />
       )}
-      <Component
-        cart={cart}
-        addtoCart={addtoCart}
-        removefromCart={removefromCart}
-        clearCart={clearCart}
-        total={total}
-        buyNow={buyNow}
-        {...pageProps}
-      />
+      <ApolloProvider client={client}>
+        <Component
+          cart={cart}
+          addtoCart={addtoCart}
+          removefromCart={removefromCart}
+          clearCart={clearCart}
+          total={total}
+          buyNow={buyNow}
+          {...pageProps}
+        />
+      </ApolloProvider>
       <Footer />
     </>
   );
