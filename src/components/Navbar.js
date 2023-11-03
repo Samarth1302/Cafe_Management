@@ -9,15 +9,15 @@ import {
 import { MdAccountCircle } from "react-icons/md";
 import { useRouter } from "next/router";
 
-const Navbar = (
+const Navbar = ({
   user,
   cart,
   addtoCart,
   removefromCart,
   clearCart,
   total,
-  logout
-) => {
+  logout,
+}) => {
   useEffect(() => {
     Object.keys(cart).length !== 0 && setSidebar(true);
     let nonSide = ["/"];
@@ -59,7 +59,7 @@ const Navbar = (
             className=" text-xl md:text-2xl"
             style={iconStyle}
           />
-          {user.value && (
+          {user.email && (
             <Link href={"/orders"}>
               <MdAccountCircle
                 className="text-xl mx-4 md:text-2xl"
@@ -67,13 +67,13 @@ const Navbar = (
               />
             </Link>
           )}
-          {!user.value && (
+          {!user.email && (
             <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4">
               <Link href={"/login"}>Login</Link> /{" "}
               <Link href={"/signup"}>Sign-up</Link>
             </button>
           )}{" "}
-          {user.value && (
+          {user.email && (
             <Link href={"/"}>
               <button
                 onClick={logout}
@@ -146,7 +146,7 @@ const Navbar = (
           <div className="flex my-4">
             <Link href={"/checkout"} legacyBehavior>
               <button
-                disabled={Object.keys(cart).length === 0 || !user.value}
+                disabled={Object.keys(cart).length === 0 || !user.email}
                 className=" disabled:bg-yellow-200 flex mr-2  text-black bg-yellow-500 border-0 py-2 px-2 focus:outline-none hover:bg-yellow-600 rounded text-sm"
               >
                 Checkout
@@ -161,7 +161,7 @@ const Navbar = (
               Clear Cart
             </button>
           </div>
-          {!user.value && (
+          {!user.email && (
             <span className="text-red-700 text-sm">
               Please login to buy a product
             </span>

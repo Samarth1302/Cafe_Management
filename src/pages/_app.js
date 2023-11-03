@@ -1,6 +1,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import "@/styles/globals.css";
+import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
@@ -44,9 +45,19 @@ export default function App({ Component, pageProps }) {
       console.error(error);
       localStorage.clear();
     }
-    const myUser = JSON.parse(localStorage.getItem("myUser"));
-    if (myUser) {
-      setUser({ value: myUser.token, email: myUser.email });
+
+    const token = JSON.parse(localStorage.getItem("myUser"));
+    if (token) {
+      try {
+        const decodedToken = jwt.verify(
+          token,
+          process.env.NEXT_PUBLIC_JWT_SECRET
+        );
+        setUser(decodedToken);
+      } catch (error) {
+        console.error("Error decoding JWT token:", error);
+        localStorage.removeItem("myUser");
+      }
     }
     setKey(Math.random());
   }, [router.query]);
@@ -57,7 +68,7 @@ export default function App({ Component, pageProps }) {
     setKey(Math.random());
     router.push("/");
   };
-  const saveCart = (myCart) => {
+  const saveCart = ({ myCart }) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
     let subt = 0;
     let keys = Object.keys(myCart);
@@ -103,7 +114,7 @@ export default function App({ Component, pageProps }) {
     newCart[itemId] = { qty: 1, price, iName };
     setCart(newCart);
     saveCart(newCart);
-    if (user.value) {
+    if (user.email) {
       router.push("/checkout");
     } else {
       toast.error("Please Login to buy a product", {
