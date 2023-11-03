@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +9,9 @@ import Head from "next/head";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
+  const [remember, setRemember] = useState(false);
   const router = useRouter();
+  const formRef = useRef(null);
 
   const LOGIN_USER = gql`
     mutation Login($loginInput: loginInput) {
@@ -18,6 +20,16 @@ const Login = () => {
       }
     }
   `;
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("rememberedEmail");
+    const rememberedPass = localStorage.getItem("rememberedPass");
+    if (rememberedEmail && rememberedPass) {
+      setEmail(rememberedEmail);
+      setPass(rememberedPass);
+      setRemember(true);
+    }
+  }, []);
+
   const [loginUser] = useMutation(LOGIN_USER);
   const handleChange = (e) => {
     if (e.target.name == "email") {
@@ -26,7 +38,11 @@ const Login = () => {
     if (e.target.name == "password") {
       setPass(e.target.value);
     }
+    if (e.target.name == "remember") {
+      setRemember(e.target.value);
+    }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -73,6 +89,13 @@ const Login = () => {
         theme: "light",
       });
     }
+    if (remember) {
+      localStorage.setItem("rememberedEmail", email);
+      localStorage.setItem("rememberedPass", password);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+      localStorage.removeItem("rememberedPass");
+    }
     setEmail("");
     setPass("");
   };
@@ -98,14 +121,16 @@ const Login = () => {
         pauseOnHover
         theme="light"
       />
-      <section className="bg-black">
-        <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto md:h-screen lg:py-0">
+      <section className=" bg-black">
+        <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto h-screen lg:py-0">
           <div className="w-full rounded-lg shadow  md:mt-24 sm:max-w-md xl:p-0">
             <div className="p-4 relative space-y-8 md:space-y-2 sm:p-8 border  rounded-lg">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-yellow-300 md:text-2xl ">
                 LOGIN
               </h1>
               <form
+                ref={formRef}
+                id="loginForm"
                 onSubmit={handleSubmit}
                 className="space-y-4 md:space-y-6"
                 method="POST"
@@ -153,13 +178,15 @@ const Login = () => {
                         id="remember"
                         aria-describedby="remember"
                         type="checkbox"
+                        checked={remember}
+                        onChange={handleChange}
                         className="w-4 h-4  accent-yellow-400 border border-white rounded bg-white focus:ring-3 focus:ring-primary-300"
                         required=""
                       />
                     </div>
-                    <div className="ml-3 text-sm">
+                    <div className="ml-1 text-sm">
                       <label htmlFor="remember" className="text-white">
-                        Remember
+                        Remember me
                       </label>
                     </div>
                   </div>

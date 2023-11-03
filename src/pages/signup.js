@@ -106,8 +106,8 @@ const Signup = () => {
         pauseOnHover
         theme="light"
       />
-      <section className="bg-black">
-        <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto md:h-screen lg:py-0">
+      <section className=" bg-black">
+        <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto h-screen lg:py-0">
           <div className="w-full rounded-lg shadow  md:mt-24 sm:max-w-md xl:p-0">
             <div className="p-4 relative space-y-8 md:space-y-2 sm:p-8 border  rounded-lg">
               <h1 className="text-xl text-center font-bold leading-tight tracking-tight text-yellow-300 md:text-2xl  ">
@@ -173,23 +173,6 @@ const Signup = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        type="checkbox"
-                        className="w-4 h-4 accent-yellow-400 text-yellow-400 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500"
-                        required=""
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label htmlFor="remember" className="text-white">
-                        Remember
-                      </label>
-                    </div>
-                  </div>
-                </div>
                 <div className="flex justify-center">
                   <button
                     type="submit"
