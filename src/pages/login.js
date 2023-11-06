@@ -9,9 +9,7 @@ import Head from "next/head";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
-  const [remember, setRemember] = useState(false);
   const router = useRouter();
-  const formRef = useRef(null);
 
   const LOGIN_USER = gql`
     mutation Login($loginInput: loginInput) {
@@ -20,15 +18,8 @@ const Login = () => {
       }
     }
   `;
-  useEffect(() => {
-    const rememberedEmail = localStorage.getItem("rememberedEmail");
-    const rememberedPass = localStorage.getItem("rememberedPass");
-    if (rememberedEmail && rememberedPass) {
-      setEmail(rememberedEmail);
-      setPass(rememberedPass);
-      setRemember(true);
-    }
-  }, []);
+
+  useEffect(() => {}, []);
 
   const [loginUser] = useMutation(LOGIN_USER);
   const handleChange = (e) => {
@@ -37,9 +28,6 @@ const Login = () => {
     }
     if (e.target.name == "password") {
       setPass(e.target.value);
-    }
-    if (e.target.name == "remember") {
-      setRemember(e.target.value);
     }
   };
 
@@ -89,13 +77,7 @@ const Login = () => {
         theme: "light",
       });
     }
-    if (remember) {
-      localStorage.setItem("rememberedEmail", email);
-      localStorage.setItem("rememberedPass", password);
-    } else {
-      localStorage.removeItem("rememberedEmail");
-      localStorage.removeItem("rememberedPass");
-    }
+
     setEmail("");
     setPass("");
   };
@@ -129,7 +111,6 @@ const Login = () => {
                 LOGIN
               </h1>
               <form
-                ref={formRef}
                 id="loginForm"
                 onSubmit={handleSubmit}
                 className="space-y-4 md:space-y-6"
@@ -172,24 +153,6 @@ const Login = () => {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        checked={remember}
-                        onChange={handleChange}
-                        className="w-4 h-4  accent-yellow-400 border border-white rounded bg-white focus:ring-3 focus:ring-primary-300"
-                        required=""
-                      />
-                    </div>
-                    <div className="ml-1 text-sm">
-                      <label htmlFor="remember" className="text-white">
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
                   <Link href="/forget" legacyBehavior>
                     <a className="text-sm font-medium text-primary-600 hover:underline text-yellow-300">
                       Forgot password?

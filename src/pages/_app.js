@@ -66,7 +66,7 @@ export default function App({ Component, pageProps }) {
     localStorage.removeItem("myUser");
     setUser({ value: null });
     setKey(Math.random());
-    router.push("/");
+    router.push(process.env.NEXT_PUBLIC_HOST);
   };
   const saveCart = ({ myCart }) => {
     localStorage.setItem("cart", JSON.stringify(myCart));
