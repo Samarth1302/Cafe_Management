@@ -171,22 +171,24 @@ const Signup = () => {
                   >
                     Password
                   </label>
-                  <input
-                    onChange={handleChange}
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    id="password"
-                    value={password}
-                    placeholder="••••••••"
-                    className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
-                    required=""
-                  />
-                  <span
-                    onClick={handlePasswordVisibility}
-                    className="relative text-xl text-white cursor-pointer"
-                  >
-                    {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
-                  </span>
+                  <div className="relative">
+                    <input
+                      onChange={handleChange}
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      id="password"
+                      value={password}
+                      placeholder="••••••••"
+                      className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                      required=""
+                    />
+                    <span
+                      onClick={handlePasswordVisibility}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center leading-5 text-xl text-white cursor-pointer"
+                    >
+                      {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex justify-center">
                   <button
