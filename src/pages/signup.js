@@ -55,7 +55,7 @@ const Signup = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
         setTimeout(() => {
           router.push(process.env.NEXT_PUBLIC_HOST);
@@ -69,7 +69,7 @@ const Signup = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
       }
     } catch (error) {
@@ -81,7 +81,7 @@ const Signup = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
     }
     setEmail("");

@@ -77,7 +77,7 @@ export default function App({ Component, pageProps }) {
     setTotal(subt);
   };
 
-  const addtoCart = (itemId, qty, price, iName) => {
+  const addtoCart = (itemId, qty, price) => {
     if (Object.keys(cart).length == 0) {
       setKey(Math.random());
     }
@@ -85,13 +85,13 @@ export default function App({ Component, pageProps }) {
     if (itemId in cart) {
       newCart[itemId].qty += 1;
     } else {
-      newCart[itemId] = { qty: 1, price, iName, type };
+      newCart[itemId] = { qty: 1, price };
     }
     setCart(newCart);
     saveCart(newCart);
   };
 
-  const removefromCart = (itemId, qty, price, iName) => {
+  const removefromCart = (itemId, qty, price) => {
     let newCart = cart;
     if (itemId in cart) {
       newCart[itemId].qty -= 1;
@@ -118,7 +118,7 @@ export default function App({ Component, pageProps }) {
       />
       <RouteLoader />
       <ToastContainer
-        position="top-right"
+        position="top-left"
         autoClose={1000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -143,6 +143,7 @@ export default function App({ Component, pageProps }) {
       )}
       <ApolloProvider client={client}>
         <Component
+          user={user}
           cart={cart}
           addtoCart={addtoCart}
           removefromCart={removefromCart}

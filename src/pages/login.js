@@ -49,7 +49,7 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
         setEmail("");
         setPass("");
@@ -65,7 +65,7 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
       }
     } catch (error) {
@@ -77,7 +77,7 @@ const Login = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
       setPass("");
     }
