@@ -16,7 +16,7 @@ const Footer = () => {
   return (
     <>
       {foot && (
-        <div className="flex flex-col md:flex-row md:justify-center justify-center text-center py-2 shadow-md sticky text-slate-400 top-0 z-0 pb-6 bg-black">
+        <div className="flex flex-col md:flex-row md:justify-center justify-center text-center py-2 shadow-md sticky text-slate-400 top-0 z-0 pb-6 bg-slate-900">
           Powered by @Software_Engineers
         </div>
       )}

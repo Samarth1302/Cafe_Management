@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const LOGIN_USER = gql`
@@ -19,8 +21,6 @@ const Login = () => {
     }
   `;
 
-  useEffect(() => {}, []);
-
   const [loginUser] = useMutation(LOGIN_USER);
   const handleChange = (e) => {
     if (e.target.name == "email") {
@@ -30,7 +30,9 @@ const Login = () => {
       setPass(e.target.value);
     }
   };
-
+  const handlePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -49,11 +51,13 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
+        setEmail("");
+        setPass("");
         setTimeout(() => {
           router.push(process.env.NEXT_PUBLIC_HOST);
         }, 1000);
       } else {
-        toast.error("Incorrect email or password", {
+        toast.error("Did not receive server data", {
           position: "top-left",
           autoClose: 2000,
           hideProgressBar: false,
@@ -65,8 +69,7 @@ const Login = () => {
         });
       }
     } catch (error) {
-      console.error("Error during login:", error);
-      toast.error("Server Error", {
+      toast.error(error.message, {
         position: "top-left",
         autoClose: 2000,
         hideProgressBar: false,
@@ -76,10 +79,8 @@ const Login = () => {
         progress: undefined,
         theme: "light",
       });
+      setPass("");
     }
-
-    setEmail("");
-    setPass("");
   };
   return (
     <div>
@@ -103,7 +104,7 @@ const Login = () => {
         pauseOnHover
         theme="light"
       />
-      <section className=" bg-black">
+      <section className=" bg-slate-900">
         <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto h-screen lg:py-0">
           <div className="w-full rounded-lg shadow  md:mt-24 sm:max-w-md xl:p-0">
             <div className="p-4 relative space-y-8 md:space-y-2 sm:p-8 border  rounded-lg">
@@ -115,6 +116,12 @@ const Login = () => {
                 onSubmit={handleSubmit}
                 className="space-y-4 md:space-y-6"
                 method="POST"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
               >
                 <div>
                   <label
@@ -129,7 +136,7 @@ const Login = () => {
                     name="email"
                     id="email"
                     value={email}
-                    className="bg-black border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                    className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="name@company.com"
                     required=""
                   />
@@ -143,14 +150,20 @@ const Login = () => {
                   </label>
                   <input
                     onChange={handleChange}
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     value={password}
                     placeholder="••••••••"
-                    className="bg-black border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                    className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pr-10 p-2.5"
                     required=""
                   />
+                  <span
+                    onClick={handlePasswordVisibility}
+                    className="relative text-xl text-white cursor-pointer"
+                  >
+                    {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <Link href="/forget" legacyBehavior>
@@ -162,7 +175,7 @@ const Login = () => {
                 <div className="flex justify-center">
                   <button
                     type="submit"
-                    className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 
+                    className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-2 
     focus:outline-none focus:ring-white font-medium rounded-lg text-base px-7 py-2 text-center"
                   >
                     Login

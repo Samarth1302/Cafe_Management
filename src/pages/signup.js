@@ -5,11 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const Signup = () => {
   const [username, setUname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const REGISTER_USER = gql`
@@ -31,6 +33,9 @@ const Signup = () => {
     if (e.target.name == "password") {
       setPass(e.target.value);
     }
+  };
+  const handlePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +61,7 @@ const Signup = () => {
           router.push(process.env.NEXT_PUBLIC_HOST);
         }, 1000);
       } else {
-        toast.error("Email already registered, please login", {
+        toast.error("Did not receive server data", {
           position: "top-left",
           autoClose: 2000,
           hideProgressBar: false,
@@ -68,8 +73,7 @@ const Signup = () => {
         });
       }
     } catch (error) {
-      console.error("Error during Signup:", error);
-      toast.error("Server Error", {
+      toast.error(error.message, {
         position: "top-left",
         autoClose: 2000,
         hideProgressBar: false,
@@ -106,7 +110,7 @@ const Signup = () => {
         pauseOnHover
         theme="light"
       />
-      <section className=" bg-black">
+      <section className=" bg-slate-900">
         <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto h-screen lg:py-0">
           <div className="w-full rounded-lg shadow  md:mt-24 sm:max-w-md xl:p-0">
             <div className="p-4 relative space-y-8 md:space-y-2 sm:p-8 border  rounded-lg">
@@ -117,6 +121,12 @@ const Signup = () => {
                 onSubmit={handleSubmit}
                 className="space-y-4 md:space-y-6"
                 method="POST"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
               >
                 <div>
                   <label
@@ -131,7 +141,7 @@ const Signup = () => {
                     name="username"
                     id="username"
                     value={username}
-                    className="bg-black border-white-300 border-2 text-white 0 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                    className="bg-slate-900 border-white-300 border-2 text-white 0 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
                     placeholder="user123"
                     required=""
                   />
@@ -149,7 +159,7 @@ const Signup = () => {
                     name="email"
                     id="email"
                     value={email}
-                    className="bg-black border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                    className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
                     placeholder="name@company.com"
                     required=""
                   />
@@ -163,16 +173,21 @@ const Signup = () => {
                   </label>
                   <input
                     onChange={handleChange}
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     value={password}
                     placeholder="••••••••"
-                    className="bg-black border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
+                    className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  "
                     required=""
                   />
+                  <span
+                    onClick={handlePasswordVisibility}
+                    className="relative text-xl text-white cursor-pointer"
+                  >
+                    {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                  </span>
                 </div>
-
                 <div className="flex justify-center">
                   <button
                     type="submit"
