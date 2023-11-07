@@ -186,7 +186,7 @@ const Login = () => {
                 <p className="text-center text-sm font-medium text-white ">
                   Don't have an account yet ?{" "}
                   <Link href="/signup" legacyBehavior>
-                    <a className="font-semibold text-white text-primary-600 hover:underline ">
+                    <a className="font-semibold text-yellow-200 text-primary-600 hover:underline ">
                       Sign up
                     </a>
                   </Link>

@@ -193,8 +193,8 @@ const Signup = () => {
                 <div className="flex justify-center">
                   <button
                     type="submit"
-                    className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-4 
-    focus:outline-none focus:ring-yellow-200 font-medium rounded-lg text-base px-7 py-2 text-center"
+                    className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-2 
+    focus:outline-none focus:ring-white font-medium rounded-lg text-base px-7 py-2 text-center"
                   >
                     Sign-Up
                   </button>
@@ -202,7 +202,7 @@ const Signup = () => {
                 <p className=" text-center text-sm font-medium text-white ">
                   Already a registered user ?{" "}
                   <Link href="/login" legacyBehavior>
-                    <a className="font-semibold text-white text-primary-600 hover:underline ">
+                    <a className="font-semibold text-yellow-200 text-primary-600 hover:underline ">
                       Login
                     </a>
                   </Link>
