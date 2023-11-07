@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import RouteLoader from "@/components/Loader";
 import "@/styles/globals.css";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
@@ -42,7 +43,6 @@ export default function App({ Component, pageProps }) {
         saveCart(JSON.parse(localStorage.getItem("cart")));
       }
     } catch (error) {
-      console.error(error);
       localStorage.clear();
     }
 
@@ -55,7 +55,6 @@ export default function App({ Component, pageProps }) {
         );
         setUser(decodedToken);
       } catch (error) {
-        console.error("Error decoding JWT token:", error);
         localStorage.removeItem("myUser");
       }
     }
@@ -86,7 +85,7 @@ export default function App({ Component, pageProps }) {
     if (itemId in cart) {
       newCart[itemId].qty += 1;
     } else {
-      newCart[itemId] = { qty: 1, price, iName, size, type };
+      newCart[itemId] = { qty: 1, price, iName, type };
     }
     setCart(newCart);
     saveCart(newCart);
@@ -109,26 +108,6 @@ export default function App({ Component, pageProps }) {
     saveCart({});
   };
 
-  const buyNow = (itemId, qty, price, iName) => {
-    let newCart = {};
-    newCart[itemId] = { qty: 1, price, iName };
-    setCart(newCart);
-    saveCart(newCart);
-    if (user.email) {
-      router.push("/checkout");
-    } else {
-      toast.error("Please Login to buy a product", {
-        position: "top-right",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
   return (
     <>
       <LoadingBar
@@ -137,6 +116,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={300}
         onLoaderFinished={() => setProgress(0)}
       />
+      <RouteLoader />
       <ToastContainer
         position="top-right"
         autoClose={1000}
@@ -168,7 +148,6 @@ export default function App({ Component, pageProps }) {
           removefromCart={removefromCart}
           clearCart={clearCart}
           total={total}
-          buyNow={buyNow}
           {...pageProps}
         />
       </ApolloProvider>

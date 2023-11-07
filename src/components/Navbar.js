@@ -144,12 +144,12 @@ const Navbar = ({
           </ol>
           <span className="total font-bold">SubTotal: ₹{total}</span>
           <div className="flex my-4">
-            <Link href={"/checkout"} legacyBehavior>
+            <Link href={"/order"} legacyBehavior>
               <button
                 disabled={Object.keys(cart).length === 0 || !user.email}
                 className=" disabled:bg-yellow-200 flex mr-2  text-black bg-yellow-500 border-0 py-2 px-2 focus:outline-none hover:bg-yellow-600 rounded text-sm"
               >
-                Checkout
+                Order
               </button>
             </Link>
             <button
