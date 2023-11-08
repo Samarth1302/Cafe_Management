@@ -63,9 +63,6 @@ export default function App({ Component, pageProps }) {
   }, [router.query]);
 
   const computeTotal = (myCart) => {
-    if (!myCart) {
-      return 0;
-    }
     let subt = 0;
     let keys = Object.keys(myCart);
     for (let i = 0; i < keys.length; i++) {
@@ -85,9 +82,6 @@ export default function App({ Component, pageProps }) {
   };
 
   const addtoCart = (itemId, name, qty, price) => {
-    if (!itemId) {
-      return;
-    }
     if (Object.keys(cart).length === 0) {
       setKey(Math.random());
     }
