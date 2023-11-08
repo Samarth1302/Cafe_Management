@@ -24,7 +24,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
   const { error, data } = useQuery(GET_ALL_ITEMS);
   const [items, setItems] = useState([]);
 
-  const handleButton = () => {
+  const handleButton = ({ item }) => {
     if (!user.email) {
       return toast.error("Please login first to order items", {
         position: "top-left",
@@ -104,7 +104,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
                   <p className="text-white text-sm "> {item.itemDesc}</p>
                   <p className="mt-1 text-sm">₹ {item.itemPrice}</p>
                   <button
-                    onClick={handleButton}
+                    onClick={handleButton({ item })}
                     className="flex m-2 text-sm text-white bg-slate-700 
                   border-white border-2 py-1  md:px-2 focus:outline-none hover:bg-slate-600 rounded "
                   >
