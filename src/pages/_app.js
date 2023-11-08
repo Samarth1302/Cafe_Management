@@ -18,7 +18,7 @@ import {
 export default function App({ Component, pageProps }) {
   const [cart, setCart] = useState({});
   const [total, setTotal] = useState(0);
-  const [user, setUser] = useState({ value: null });
+  const [user, setUser] = useState({});
   const [key, setKey] = useState();
   const router = useRouter();
 
@@ -38,12 +38,13 @@ export default function App({ Component, pageProps }) {
       setProgress(100);
     });
     try {
-      if (localStorage.getItem("cart")) {
-        setCart(JSON.parse(localStorage.getItem("cart")));
-        saveCart(JSON.parse(localStorage.getItem("cart")));
+      const storedCart = JSON.parse(localStorage.getItem("cart"));
+      if (storedCart) {
+        setCart(storedCart);
+        computeTotal(storedCart);
       }
     } catch (error) {
-      localStorage.clear();
+      localStorage.removeItem("cart");
     }
 
     const token = JSON.parse(localStorage.getItem("myUser"));
@@ -61,14 +62,10 @@ export default function App({ Component, pageProps }) {
     setKey(Math.random());
   }, [router.query]);
 
-  const logout = () => {
-    localStorage.removeItem("myUser");
-    setUser({ value: null });
-    setKey(Math.random());
-    router.push(process.env.NEXT_PUBLIC_HOST);
-  };
-  const saveCart = ({ myCart }) => {
-    localStorage.setItem("cart", JSON.stringify(myCart));
+  const computeTotal = (myCart) => {
+    if (!myCart) {
+      return 0;
+    }
     let subt = 0;
     let keys = Object.keys(myCart);
     for (let i = 0; i < keys.length; i++) {
@@ -76,23 +73,36 @@ export default function App({ Component, pageProps }) {
     }
     setTotal(subt);
   };
+  const logout = () => {
+    localStorage.removeItem("myUser");
+    setUser({});
+    setKey(Math.random());
+    router.push(process.env.NEXT_PUBLIC_HOST);
+  };
+  const saveCart = ({ myCart }) => {
+    localStorage.setItem("cart", JSON.stringify(myCart));
+    computeTotal(myCart);
+  };
 
-  const addtoCart = (itemId, qty, price) => {
-    if (Object.keys(cart).length == 0) {
+  const addtoCart = (itemId, name, qty, price) => {
+    if (!itemId) {
+      return;
+    }
+    if (Object.keys(cart).length === 0) {
       setKey(Math.random());
     }
-    let newCart = cart;
+    const newCart = { ...cart };
     if (itemId in cart) {
       newCart[itemId].qty += 1;
     } else {
-      newCart[itemId] = { qty: 1, price };
+      newCart[itemId] = { name, qty: 1, price };
     }
     setCart(newCart);
     saveCart(newCart);
   };
 
   const removefromCart = (itemId, qty, price) => {
-    let newCart = cart;
+    const newCart = { ...cart };
     if (itemId in cart) {
       newCart[itemId].qty -= 1;
     }

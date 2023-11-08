@@ -106,33 +106,19 @@ const Navbar = ({
                 <li key={k}>
                   <div className="item flex my-5 ">
                     <div className="w-2/3 font-semibold mx-4">
-                      {cart[k].iName} ({cart[k].size}/{cart[k].type})
+                      {cart[k].name}
                     </div>
                     <div className="flex items-center font-semibold justify-center w-1/3 ">
                       <AiOutlineMinusCircle
                         onClick={() => {
-                          removefromCart(
-                            k,
-                            1,
-                            cart[k].price,
-                            cart[k].iName,
-                            cart[k].size,
-                            cart[k].type
-                          );
+                          removefromCart(k, 1, cart[k].price);
                         }}
                         className="cursor-pointer"
                       />
                       <span className="mx-2 text-sm">{cart[k].qty}</span>
                       <AiOutlinePlusCircle
                         onClick={() => {
-                          addtoCart(
-                            k,
-                            1,
-                            cart[k].price,
-                            cart[k].iName,
-                            cart[k].size,
-                            cart[k].type
-                          );
+                          addtoCart(k, cart[k].name, 1, cart[k].price);
                         }}
                         className="cursor-pointer"
                       />
