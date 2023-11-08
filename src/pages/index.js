@@ -78,7 +78,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
         pauseOnHover
         theme="dark"
       />
-      <div className="min-h-screen bg-slate-900 text-white flex flex-auto px-5 py-24 mx-auto">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-24 mx-auto">
         {loadingData ? (
           <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-black/40">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
@@ -87,7 +87,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
           items.map((item) => (
             <div
               key={item.id}
-              className="lg:w-1/4 md:w-1/2 p-4 w-full cursor-pointer shadow-lg m-5"
+              className="lg:w-1/5 md:w-1/3 p-4 w-full cursor-pointer shadow-lg shadow-slate-800 m-5"
             >
               <div className="flex mt-4 text-center">
                 <div className="mr-4">
@@ -95,8 +95,8 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
                     className="m-auto block"
                     src={item.itemImage}
                     alt={item.itemName}
-                    width={100}
-                    height={80}
+                    width={140}
+                    height={100}
                   ></Image>
                 </div>
                 <div className="text-left">

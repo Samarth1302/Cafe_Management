@@ -62,11 +62,12 @@ export default function App({ Component, pageProps }) {
     setKey(Math.random());
   }, [router.query]);
 
-  const computeTotal = (myCart) => {
+  const computeTotal = (cart) => {
+    if (!cart) return;
     let subt = 0;
-    let keys = Object.keys(myCart);
+    let keys = Object.keys(cart);
     for (let i = 0; i < keys.length; i++) {
-      subt += myCart[keys[i]].price * myCart[keys[i]].qty;
+      subt += cart[keys[i]].price * cart[keys[i]].qty;
     }
     setTotal(subt);
   };
@@ -76,9 +77,9 @@ export default function App({ Component, pageProps }) {
     setKey(Math.random());
     router.push(process.env.NEXT_PUBLIC_HOST);
   };
-  const saveCart = ({ myCart }) => {
-    localStorage.setItem("cart", JSON.stringify(myCart));
-    computeTotal(myCart);
+  const saveCart = ({ cart }) => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    computeTotal(cart);
   };
 
   const addtoCart = (itemId, name, qty, price) => {

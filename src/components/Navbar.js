@@ -27,9 +27,13 @@ const Navbar = ({
   }, []);
   const [sidebar, setSidebar] = useState(false);
   const router = useRouter();
+  const [cartCount, setCartCount] = useState(Object.keys(cart).length);
   const toggleCart = () => {
     setSidebar(!sidebar);
   };
+  useEffect(() => {
+    setCartCount(Object.keys(cart).length);
+  }, [cart]);
   const ref = useRef();
   const iconStyle = {
     color: "yellow",
@@ -50,15 +54,23 @@ const Navbar = ({
           </Link>
         </div>
         <div
-          className={`cart items-center   cursor-pointer absolute md:right-16  ${
+          className={`cart items-center cursor-pointer absolute md:right-16  ${
             sidebar && "md:right-60 sm:right-2"
           } md:top-5 sm:top-6 ml-40  flex`}
         >
-          <BsCart2
-            onClick={toggleCart}
-            className=" text-xl md:text-2xl"
-            style={iconStyle}
-          />
+          <div className="flex items-center">
+            <BsCart2
+              onClick={toggleCart}
+              className=" text-xl md:text-2xl"
+              style={iconStyle}
+            />{" "}
+            <div
+              className="text-yellow-400 text-sm md:text-base"
+              style={{ position: "relative", top: "-16px", right: "16px" }}
+            >
+              {cartCount}
+            </div>
+          </div>
           {user.email && (
             <Link href={"/orders"}>
               <MdAccountCircle
