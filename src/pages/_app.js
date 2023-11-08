@@ -38,13 +38,13 @@ export default function App({ Component, pageProps }) {
       setProgress(100);
     });
     try {
-      const storedCart = JSON.parse(localStorage.getItem("cart"));
+      const storedCart = JSON.parse(localStorage.getItem("myCart"));
       if (storedCart) {
         setCart(storedCart);
         computeTotal(storedCart);
       }
     } catch (error) {
-      localStorage.removeItem("cart");
+      localStorage.removeItem("myCart");
     }
 
     const token = JSON.parse(localStorage.getItem("myUser"));
@@ -63,22 +63,24 @@ export default function App({ Component, pageProps }) {
   }, [router.query]);
 
   const computeTotal = (cart) => {
-    if (!cart) return;
     let subt = 0;
+    if (!cart) return subt;
     let keys = Object.keys(cart);
     for (let i = 0; i < keys.length; i++) {
       subt += cart[keys[i]].price * cart[keys[i]].qty;
     }
     setTotal(subt);
   };
+
   const logout = () => {
     localStorage.removeItem("myUser");
     setUser({});
     setKey(Math.random());
     router.push(process.env.NEXT_PUBLIC_HOST);
   };
-  const saveCart = ({ cart }) => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+
+  const saveCart = (cart) => {
+    localStorage.setItem("myCart", JSON.stringify(cart));
     computeTotal(cart);
   };
 
@@ -88,18 +90,19 @@ export default function App({ Component, pageProps }) {
     }
     const newCart = { ...cart };
     if (itemId in cart) {
-      newCart[itemId].qty += 1;
+      newCart[itemId].qty += qty;
     } else {
-      newCart[itemId] = { name, qty: 1, price };
+      newCart[itemId] = { name, qty: qty, price };
     }
     setCart(newCart);
     saveCart(newCart);
   };
 
-  const removefromCart = (itemId, qty, price) => {
+  const removefromCart = (itemId, qty) => {
+    if (!cart) return;
     const newCart = { ...cart };
     if (itemId in cart) {
-      newCart[itemId].qty -= 1;
+      newCart[itemId].qty -= qty;
     }
     if (newCart[itemId].qty <= 0) {
       delete newCart[itemId];

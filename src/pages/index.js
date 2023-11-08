@@ -64,7 +64,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
         <title>Cafe-management</title>
         <meta name="description" content="." />
         <meta name="keywords" content="" />
-        <link rel="icon" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <ToastContainer
         position="top-left"
@@ -78,7 +78,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
         pauseOnHover
         theme="dark"
       />
-      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-24 mx-auto">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-8 mx-auto">
         {loadingData ? (
           <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-black/40">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
@@ -106,7 +106,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
                   <button
                     onClick={() => handleButton(item)}
                     className="flex m-2 text-sm text-white bg-slate-700 
-                  border-white border-2 py-1  md:px-2 focus:outline-none hover:bg-slate-600 rounded "
+                  border-white border-2 py-1  px-2 focus:outline-none hover:bg-slate-600 rounded "
                   >
                     Add it!
                   </button>
