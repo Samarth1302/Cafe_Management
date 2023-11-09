@@ -46,6 +46,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
       setLoadingData(false);
     }
   }, [data]);
+
   if (error) {
     return toast.error(error.message, {
       position: "top-left",
@@ -87,7 +88,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
           items.map((item) => (
             <div
               key={item.id}
-              className="lg:w-1/5 md:w-1/3 p-4 w-full cursor-pointer shadow-lg shadow-slate-800 m-5"
+              className="lg:w-1/5 md:w-1/3 p-4 w-96 h-48 cursor-pointer shadow-lg shadow-slate-800 m-5 rounded-lg border-slate-800 border-r-2"
             >
               <div className="flex mt-4 text-center">
                 <div className="mr-4">
@@ -100,9 +101,11 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
                   ></Image>
                 </div>
                 <div className="text-left">
-                  <h3 className="text-white text-lg mb-1">{item.itemName}</h3>
-                  <p className="text-white text-sm "> {item.itemDesc}</p>
-                  <p className="mt-1 text-sm">₹ {item.itemPrice}</p>
+                  <h3 className="text-white text-lg">{item.itemName}</h3>
+                  <p className="mt-1 text-base">₹ {item.itemPrice}</p>
+                  <p className="text-base">
+                    In cart: {cart[item.id] ? cart[item.id].qty : 0}
+                  </p>
                   <button
                     onClick={() => handleButton(item)}
                     className="flex m-2 text-sm text-white bg-slate-700 
