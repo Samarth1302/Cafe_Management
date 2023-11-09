@@ -89,7 +89,7 @@ const Navbar = ({
             <Link href={"/"}>
               <button
                 onClick={logout}
-                className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4"
+                className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black sm:mx-1 lg:mx-4"
               >
                 Logout
               </button>
