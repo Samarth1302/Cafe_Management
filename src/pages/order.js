@@ -11,8 +11,8 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
     return qty * price;
   };
   const [customerName, setCustomerName] = useState(user.username);
-  const handleInputChange = (event) => {
-    setCustomerName(event.target.value);
+  const handleInputChange = (e) => {
+    setCustomerName(e.target.value);
   };
   const router = useRouter();
   const iconStyle = {
@@ -32,11 +32,22 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
   const handleAdClick = () => {
     router.push(process.env.NEXT_PUBLIC_HOST);
   };
+  const itemsArray = Object.values(cart).map((item) => ({
+    name: item.name,
+    quantity: item.qty,
+    price: item.price,
+  }));
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await placeOrder({
-        variables: { orderInput: { customerName: customerName } },
+        variables: {
+          orderInput: {
+            customerName: customerName,
+            items: itemsArray,
+            totalAmount: total,
+          },
+        },
       });
       if (data.placeOrder) {
         toast.success("Yayy! Order placed", {
@@ -50,7 +61,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
           theme: "dark",
         });
         setTimeout(() => {
-          router.push(process.env.NEXT_PUBLIC_HOST);
+          // router.push(process.env.NEXT_PUBLIC_HOST);
         }, 1000);
       } else {
         toast.error("Did not receive server data", {
@@ -98,7 +109,8 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
       />
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
         {user.role !== "customer" && (
-          <div className="w-full justify-center text-center p-2">
+          <div className="w-full justify-center flex flex-row text-center p-2">
+            <p className=" content-center my-2 px-4">Customer Name:</p>
             <input
               type="text"
               placeholder="Enter customer name"
@@ -155,7 +167,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
           </div>
           <div className="flex justify-center mt-4">
             <button
-              className="bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded"
+              className="bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white"
               onClick={handleSubmit}
             >
               Place Order

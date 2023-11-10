@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +12,7 @@ const Login = () => {
   const [password, setPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const buttonRef = useRef(null);
 
   const LOGIN_USER = gql`
     mutation Login($loginInput: loginInput) {
@@ -119,6 +120,7 @@ const Login = () => {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
+                    buttonRef.current.focus();
                     handleSubmit(e);
                   }
                 }}
@@ -177,6 +179,7 @@ const Login = () => {
                 <div className="flex justify-center">
                   <button
                     type="submit"
+                    ref={buttonRef}
                     className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-2 
     focus:outline-none focus:ring-white font-medium rounded-lg text-base px-7 py-2 text-center"
                   >
