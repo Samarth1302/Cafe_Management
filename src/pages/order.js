@@ -56,7 +56,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
         },
         context: {
           headers: {
-            authorization: token ? { token } : "",
+            authorization: token || "",
           },
         },
       });
@@ -77,7 +77,6 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
         clearCart();
         setTimeout(() => {
           router.push(process.env.NEXT_PUBLIC_HOST);
-          cle;
         }, 1000);
       } else {
         toast.error("Did not receive server data", {
