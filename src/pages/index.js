@@ -3,8 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useQuery } from "@apollo/client";
-import { gql } from "graphql-tag";
+import { useQuery, gql } from "@apollo/client";
 
 const Home = ({ user, cart, addtoCart, removefromCart }) => {
   const GET_ALL_ITEMS = gql`

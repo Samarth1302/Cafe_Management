@@ -53,6 +53,22 @@ export default function App({ Component, pageProps }) {
       }
     }
     setKey(Math.random());
+
+    const handleStorageChange = (event) => {
+      if (event.key === "myCart") {
+        try {
+          const storedCart = JSON.parse(event.newValue);
+          setCart(storedCart);
+          computeTotal(storedCart);
+        } catch (error) {
+          localStorage.removeItem("myCart");
+        }
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, [router.query]);
 
   const httpLink = createHttpLink({

@@ -72,7 +72,7 @@ const Navbar = ({
             </div>
           </div>
           {user.email && (
-            <Link href={"/orders"}>
+            <Link href={"/userOrder"}>
               <MdAccountCircle
                 className="text-xl mx-4 md:text-2xl"
                 style={iconStyle}

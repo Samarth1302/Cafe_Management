@@ -76,7 +76,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
         });
         clearCart();
         setTimeout(() => {
-          router.push(process.env.NEXT_PUBLIC_HOST);
+          router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
         }, 1000);
       } else {
         toast.error("Did not receive server data", {
