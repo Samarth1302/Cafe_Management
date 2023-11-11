@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,7 +6,17 @@ import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 
-const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
+const PLACE_ORDER = gql`
+  mutation PlaceOrder($orderInput: orderInput) {
+    placeOrder(orderInput: $orderInput) {
+      createdAt
+      customerName
+      status
+    }
+  }
+`;
+
+const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
   const calculateItemTotal = (qty, price) => {
     return qty * price;
   };
@@ -19,28 +29,24 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
     color: "yellow",
     cursor: "pointer",
   };
-  const PLACE_ORDER = gql`
-    mutation PlaceOrder($orderInput: orderInput) {
-      placeOrder(orderInput: $orderInput) {
-        createdAt
-        customerName
-        status
-      }
-    }
-  `;
+
   const [placeOrder] = useMutation(PLACE_ORDER);
   const handleAdClick = () => {
     router.push(process.env.NEXT_PUBLIC_HOST);
   };
-  const itemsArray = Object.values(cart).map((item) => ({
-    name: item.name,
-    quantity: item.qty,
-    price: item.price,
-  }));
+  const itemsArray = Object.keys(cart).map((key) => {
+    const item = cart[key];
+    return {
+      name: item.name,
+      quantity: item.qty,
+      price: item.price,
+    };
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = JSON.parse(localStorage.getItem("myUser"));
     try {
-      const { data } = await placeOrder({
+      const { data, errors } = await placeOrder({
         variables: {
           orderInput: {
             customerName: customerName,
@@ -48,8 +54,16 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
             totalAmount: total,
           },
         },
+        context: {
+          headers: {
+            authorization: token ? { token } : "",
+          },
+        },
       });
-      if (data.placeOrder) {
+      if (errors) {
+        console.error(errors);
+      }
+      if (data.placeOrder.status === "pending") {
         toast.success("Yayy! Order placed", {
           position: "top-left",
           autoClose: 1000,
@@ -60,8 +74,10 @@ const Order = ({ user, cart, total, addtoCart, removefromCart }) => {
           progress: undefined,
           theme: "dark",
         });
+        clearCart();
         setTimeout(() => {
-          // router.push(process.env.NEXT_PUBLIC_HOST);
+          router.push(process.env.NEXT_PUBLIC_HOST);
+          cle;
         }, 1000);
       } else {
         toast.error("Did not receive server data", {

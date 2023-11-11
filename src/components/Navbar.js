@@ -20,7 +20,7 @@ const Navbar = ({
 }) => {
   useEffect(() => {
     Object.keys(cart).length !== 0 && setSidebar(true);
-    let nonSide = ["/order", "/"];
+    let nonSide = ["/order", "/", "/login", "/signup"];
     if (nonSide.includes(router.pathname)) {
       setSidebar(false);
     }
@@ -116,11 +116,11 @@ const Navbar = ({
             {Object.keys(cart).map((k) => {
               return (
                 <li key={k}>
-                  <div className="item flex my-5 text-xl">
+                  <div className="item flex my-5 text-base">
                     <div className="w-2/3 font-semibold mx-4">
                       {cart[k].name}
                     </div>
-                    <div className="flex items-center font-bold justify-center w-1/3 ">
+                    <div className="flex items-center text-lg font-bold justify-center ">
                       <AiOutlineMinusCircle
                         onClick={() => {
                           removefromCart(k, 1, cart[k].price);

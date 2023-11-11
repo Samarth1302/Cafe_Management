@@ -11,8 +11,8 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   ApolloClient,
   InMemoryCache,
-  HttpLink,
   ApolloProvider,
+  createHttpLink,
 } from "@apollo/client";
 
 export default function App({ Component, pageProps }) {
@@ -23,13 +23,6 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
 
   const [progress, setProgress] = useState(0);
-
-  const client = new ApolloClient({
-    link: new HttpLink({
-      uri: process.env.NEXT_PUBLIC_BACKEND_URI,
-    }),
-    cache: new InMemoryCache(),
-  });
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
       setProgress(40);
@@ -61,6 +54,14 @@ export default function App({ Component, pageProps }) {
     }
     setKey(Math.random());
   }, [router.query]);
+
+  const httpLink = createHttpLink({
+    uri: process.env.NEXT_PUBLIC_BACKEND_URI,
+  });
+  const client = new ApolloClient({
+    link: httpLink,
+    cache: new InMemoryCache(),
+  });
 
   const computeTotal = (cart) => {
     let subt = 0;
@@ -137,19 +138,20 @@ export default function App({ Component, pageProps }) {
         pauseOnHover
         theme="light"
       />
-      {key && (
-        <Navbar
-          user={user}
-          key={key}
-          cart={cart}
-          addtoCart={addtoCart}
-          removefromCart={removefromCart}
-          clearCart={clearCart}
-          total={total}
-          logout={logout}
-        />
-      )}
       <ApolloProvider client={client}>
+        {key && (
+          <Navbar
+            user={user}
+            key={key}
+            cart={cart}
+            addtoCart={addtoCart}
+            removefromCart={removefromCart}
+            clearCart={clearCart}
+            total={total}
+            logout={logout}
+          />
+        )}
+
         <Component
           user={user}
           cart={cart}
