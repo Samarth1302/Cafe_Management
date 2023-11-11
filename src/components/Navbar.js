@@ -145,7 +145,7 @@ const Navbar = ({
             <Link href={"/order"} legacyBehavior>
               <button
                 disabled={Object.keys(cart).length === 0 || !user.email}
-                className=" disabled:bg-yellow-200 flex mr-2  text-black bg-yellow-500 border-0 py-2 px-2 focus:outline-none hover:bg-yellow-600 rounded text-sm"
+                className=" disabled:bg-yellow-200 flex mr-2 disabled:hover:cursor-not-allowed text-black bg-yellow-500 border-0 py-2 px-2 focus:outline-none hover:bg-yellow-600 rounded text-sm"
               >
                 Order
               </button>
@@ -153,7 +153,7 @@ const Navbar = ({
             <button
               disabled={Object.keys(cart).length === 0}
               onClick={clearCart}
-              className="  disabled:bg-yellow-200 flex  bg-yellow-500 border-0 py-2 px-1 
+              className="  disabled:bg-yellow-200 flex disabled:hover:cursor-not-allowed bg-yellow-500 border-0 py-2 px-1 
               text-black focus:outline-none hover:bg-yellow-600 rounded text-sm"
             >
               Clear Cart

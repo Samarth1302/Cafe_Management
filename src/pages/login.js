@@ -157,7 +157,6 @@ const Login = () => {
                       name="password"
                       id="password"
                       value={password}
-                      placeholder="••••••••"
                       className="bg-slate-900 border-white-300 border-2 text-white sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full pr-10 p-2.5"
                       required=""
                     />
@@ -180,8 +179,9 @@ const Login = () => {
                   <button
                     type="submit"
                     ref={buttonRef}
+                    disabled={!password || !email}
                     className="w-auto text-black bg-yellow-300 hover:bg-yellow-500 focus:ring-2 
-    focus:outline-none focus:ring-white font-medium rounded-lg text-base px-7 py-2 text-center"
+    focus:outline-none focus:ring-white font-medium rounded-lg text-base px-7 py-2 text-center disabled:hover:cursor-not-allowed"
                   >
                     Login
                   </button>

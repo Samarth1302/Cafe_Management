@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -117,6 +118,19 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
             </div>
           ))
         )}
+        <div className="flex justify-center mt-4">
+          {!loadingData && (
+            <Link href={"/order"} legacyBehavior>
+              <button
+                disabled={Object.keys(cart).length === 0}
+                className="bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white disabled:bg-slate-900 disabled:border-white disabled:border-2 disabled:text-slate-600 disabled:hover:cursor-not-allowed"
+                href
+              >
+                Finalize Order
+              </button>
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );

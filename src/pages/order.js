@@ -3,6 +3,7 @@ import Head from "next/head";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
+import { FaTimesCircle } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
 
@@ -42,6 +43,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       price: item.price,
     };
   });
+  console.log(cart);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem("myUser"));
@@ -139,15 +141,42 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
           {Object.keys(cart).map((k) => {
             const item = cart[k];
             return (
-              <div key={k} className="my-4 p-4 bg-slate-800 rounded-lg">
+              <div key={k} className="my-4 p-4 text-xl bg-slate-800 rounded-lg">
+                <FaTimesCircle
+                  style={iconStyle}
+                  onClick={() => {
+                    removefromCart(k, item.qty);
+                  }}
+                />
                 <div className="flex items-center justify-between">
                   <div className="text-left lg:pl-10">
                     <h3 className="text-white text-lg">{item.name}</h3>
-                    <p className="mt-1 text-base">Price: ₹ {item.price}</p>
-                    <p className="text-base">Quantity: {item.qty}</p>
+                    <p className="mt-1 mb-2 text-base">Price: ₹ {item.price}</p>
+                    <p className="text-base">
+                      Quantity:{" "}
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.qty}
+                        onChange={(e) => {
+                          const newQuantity = parseInt(e.target.value, 10);
+                          if (newQuantity > item.qty) {
+                            addtoCart(
+                              k,
+                              item.name,
+                              newQuantity - item.qty,
+                              item.price
+                            );
+                          } else if (newQuantity < item.qty) {
+                            removefromCart(k, item.qty - newQuantity);
+                          }
+                        }}
+                        className="bg-slate-900 text-base text-white border-white border-2 w-16 px-2 rounded"
+                      />
+                    </p>
                   </div>
                   <div className="text-right lg:pr-8">
-                    <div className="text-center space-x-2 text-2xl font-bold ml-6 flex flex-row">
+                    <div className="text-center space-x-2 text-3xl ml-6 flex flex-row">
                       <AiFillMinusCircle
                         style={iconStyle}
                         onClick={() => {
@@ -182,7 +211,8 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
           </div>
           <div className="flex justify-center mt-4">
             <button
-              className="bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white"
+              disabled={Object.keys(cart).length === 0}
+              className="bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white disabled:bg-slate-900 disabled:border-white disabled:border-2 disabled:text-slate-600 disabled:hover:cursor-not-allowed"
               onClick={handleSubmit}
             >
               Place Order
