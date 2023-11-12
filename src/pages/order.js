@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { FaTimesCircle } from "react-icons/fa";

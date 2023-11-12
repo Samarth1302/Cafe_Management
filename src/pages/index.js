@@ -1,45 +1,61 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { useState, useEffect, useCallback } from "react";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useQuery, gql } from "@apollo/client";
 
-const Home = ({ user, cart, addtoCart, removefromCart }) => {
-  const GET_ALL_ITEMS = gql`
-    query AllItems {
-      allItems {
-        id
-        itemName
-        itemDesc
-        itemGrp
-        itemImage
-        itemPrice
-      }
+const GET_ALL_ITEMS = gql`
+  query AllItems {
+    allItems {
+      id
+      itemName
+      itemDesc
+      itemGrp
+      itemImage
+      itemPrice
     }
-  `;
+  }
+`;
+const Home = ({ user, cart, addtoCart, removefromCart }) => {
+  const [debouncing, setDebouncing] = useState(false);
 
   const [loadingData, setLoadingData] = useState(true);
   const { error, data } = useQuery(GET_ALL_ITEMS);
   const [items, setItems] = useState([]);
 
+  const debouncedHandleButton = useCallback(
+    (item) => {
+      if (debouncing) return;
+
+      setDebouncing(true);
+
+      setTimeout(() => {
+        setDebouncing(false);
+      }, 4000);
+
+      if (!user.email) {
+        toast.error("Please login first to order items", {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        addtoCart(item.id, item.itemName, 1, item.itemPrice);
+      }
+    },
+    [user.email, addtoCart, debouncing]
+  );
   const handleButton = (item) => {
-    if (!user.email) {
-      return toast.error("Please login first to order items", {
-        position: "top-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    } else {
-      addtoCart(item.id, item.itemName, 1, item.itemPrice);
-    }
+    debouncedHandleButton(item);
   };
+
   useEffect(() => {
     if (data) {
       setItems(data.allItems);
@@ -110,9 +126,8 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
           {!loadingData && (
             <Link href={"/order"} legacyBehavior>
               <button
-                disabled={Object.keys(cart).length === 0}
+                disabled={Object.keys(cart).length === 0 || !user.email}
                 className="bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white disabled:bg-slate-900 disabled:border-white disabled:border-2 disabled:text-slate-600 disabled:hover:cursor-not-allowed"
-                href
               >
                 Finalize Order
               </button>

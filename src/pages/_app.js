@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
   ApolloClient,
@@ -144,7 +144,7 @@ export default function App({ Component, pageProps }) {
       <RouteLoader />
       <ToastContainer
         position="top-left"
-        limit={2}
+        limit={1}
         autoClose={1000}
         hideProgressBar={false}
         newestOnTop={false}
