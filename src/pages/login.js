@@ -93,18 +93,6 @@ const Login = () => {
         />
         <meta name="keywords" content="cafe order food " />
       </Head>
-      <ToastContainer
-        position="top-left"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <section className=" bg-slate-900">
         <div className=" flex flex-col items-center justify-between px-6 py-6 mx-auto h-screen lg:py-0">
           <div className="w-full rounded-lg shadow  md:mt-24 sm:max-w-md xl:p-0">

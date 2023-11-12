@@ -112,18 +112,6 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
         <meta name="description" content="Your order details." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ToastContainer
-        position="top-left"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
         {user.role !== "customer" && (
           <div className="w-full justify-center flex flex-row text-center p-2">

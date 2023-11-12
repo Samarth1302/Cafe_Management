@@ -62,18 +62,6 @@ const userOrder = ({ user }) => {
         <meta name="keywords" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ToastContainer
-        position="top-left"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
         {loadingData ? (
           <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-black/40">
