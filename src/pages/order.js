@@ -83,7 +83,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -95,7 +95,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

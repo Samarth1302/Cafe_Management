@@ -5,6 +5,7 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useQuery, gql } from "@apollo/client";
+import { useRouter } from "next/router";
 
 const GET_ALL_ITEMS = gql`
   query AllItems {
@@ -25,6 +26,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
   const { error, data } = useQuery(GET_ALL_ITEMS);
   const [items, setItems] = useState([]);
 
+  const router = useRouter();
   const debouncedHandleButton = useCallback(
     (item) => {
       if (debouncing) return;
@@ -38,7 +40,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
       if (!user.email) {
         toast.error("Please login first to order items", {
           position: "top-left",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -46,6 +48,9 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
           progress: undefined,
           theme: "dark",
         });
+        setTimeout(() => {
+          router.push(`${process.env.NEXT_PUBLIC_HOST}\login`);
+        }, 1000);
       } else {
         addtoCart(item.id, item.itemName, 1, item.itemPrice);
       }
@@ -63,18 +68,20 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
     }
   }, [data]);
 
-  if (error) {
-    return toast.error(error.message, {
-      position: "top-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, {
+        position: "top-left",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  }, [error]);
   return (
     <>
       <Head>

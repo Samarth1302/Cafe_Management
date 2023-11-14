@@ -10,18 +10,13 @@ const GET_USER_ORDERS = gql`
       id
       createdAt
       customerName
-      items {
-        name
-        quantity
-        price
-      }
       status
       totalAmount
     }
   }
 `;
 
-const userOrder = ({ user }) => {
+const UserOrder = ({ user }) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
   const [loadingData, setLoadingData] = useState(true);
@@ -32,7 +27,18 @@ const userOrder = ({ user }) => {
       },
     },
   });
-
+  const formatStringToDateString = (dateString) => {
+    try {
+      if (!dateString) {
+        return "Invalid Date";
+      }
+      const date = new Date(dateString);
+      return date.toLocaleDateString();
+    } catch (error) {
+      console.error("Error parsing date:", error);
+      return "Invalid Date";
+    }
+  };
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     if (data) {
@@ -41,18 +47,20 @@ const userOrder = ({ user }) => {
     }
   }, [data]);
 
-  if (error) {
-    return toast.error(error.message, {
-      position: "top-left",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message, {
+        position: "top-left",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  }, [error]);
 
   return (
     <>
@@ -77,20 +85,24 @@ const userOrder = ({ user }) => {
                     <p className="mt-1 text-base">
                       Customer Name: {order.customerName}
                     </p>
-                    <p className="text-base">Status: {order.status}</p>
-                    <p className="text-base">Date: {order.createdAt}</p>
-                  </div>
-                  <div className="text-right lg:pr-8">
-                    {order.items.map((item, index) => (
-                      <div key={index}>
-                        <p className="mt-1 text-base">{item.name}</p>
-                        <p className="text-base">Quantity: {item.quantity}</p>
-                        <p className="text-base">Price: ₹{item.price}</p>
-                      </div>
-                    ))}
-                    <p className="text-lg mt-4 pr-2">
-                      Total: ₹{order.totalAmount}
+                    <p className="text-base">
+                      Date: {formatStringToDateString(order.createdAt)}
                     </p>
+                  </div>
+                  <div className="text-right justify-normal lg:pr-8 py-2">
+                    {order.status === "pending" && (
+                      <p className="text-base text-yellow-400">
+                        {order.status}
+                      </p>
+                    )}
+                    {order.status === "completed" && (
+                      <p className="text-base text-green-600">{order.status}</p>
+                    )}
+                    {order.status === "cancelled" && (
+                      <p className="text-base text-red-700">{order.status}</p>
+                    )}
+
+                    <p className="text-base ">Total: ₹{order.totalAmount}</p>
                   </div>
                 </div>
               </div>
@@ -102,4 +114,4 @@ const userOrder = ({ user }) => {
   );
 };
 
-export default userOrder;
+export default UserOrder;

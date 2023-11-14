@@ -64,7 +64,7 @@ const Signup = () => {
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
-          autoClose: 2000,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -76,7 +76,7 @@ const Signup = () => {
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 2000,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
