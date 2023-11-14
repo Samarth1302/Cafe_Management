@@ -51,7 +51,7 @@ const UserOrder = ({ user }) => {
     if (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 1000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

@@ -44,7 +44,7 @@ const Login = () => {
         localStorage.setItem("myUser", JSON.stringify(data.login.token));
         toast.success("Logged in successfully", {
           position: "top-left",
-          autoClose: 1000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -60,7 +60,7 @@ const Login = () => {
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
-          autoClose: 1000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -72,7 +72,7 @@ const Login = () => {
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 1000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

@@ -50,7 +50,7 @@ const Signup = () => {
         localStorage.setItem("myUser", JSON.stringify(data.signup.token));
         toast.success("Logged in successfully", {
           position: "top-left",
-          autoClose: 1000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -64,7 +64,7 @@ const Signup = () => {
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
-          autoClose: 1000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -76,7 +76,7 @@ const Signup = () => {
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 1000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

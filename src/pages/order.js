@@ -68,7 +68,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       if (data.placeOrder.status === "pending") {
         toast.success("Yayy! Order placed", {
           position: "top-left",
-          autoClose: 1000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -83,7 +83,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
-          autoClose: 1000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -95,7 +95,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 1000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,

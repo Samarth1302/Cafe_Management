@@ -20,45 +20,29 @@ const GET_ALL_ITEMS = gql`
   }
 `;
 const Home = ({ user, cart, addtoCart, removefromCart }) => {
-  const [debouncing, setDebouncing] = useState(false);
-
   const [loadingData, setLoadingData] = useState(true);
   const { error, data } = useQuery(GET_ALL_ITEMS);
   const [items, setItems] = useState([]);
 
   const router = useRouter();
-  const debouncedHandleButton = useCallback(
-    (item) => {
-      if (debouncing) return;
-
-      setDebouncing(true);
-
-      setTimeout(() => {
-        setDebouncing(false);
-      }, 4000);
-
-      if (!user.email) {
-        toast.error("Please login first to order items", {
-          position: "top-left",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        setTimeout(() => {
-          router.push(`${process.env.NEXT_PUBLIC_HOST}\login`);
-        }, 1000);
-      } else {
-        addtoCart(item.id, item.itemName, 1, item.itemPrice);
-      }
-    },
-    [user.email, addtoCart, debouncing]
-  );
   const handleButton = (item) => {
-    debouncedHandleButton(item);
+    if (!user.email) {
+      toast.error("Please login first to order items", {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+      setTimeout(() => {
+        router.push(`${process.env.NEXT_PUBLIC_HOST}\login`);
+      }, 1000);
+    } else {
+      addtoCart(item.id, item.itemName, 1, item.itemPrice);
+    }
   };
 
   useEffect(() => {
@@ -72,7 +56,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
     if (error) {
       toast.error(error.message, {
         position: "top-left",
-        autoClose: 1000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
