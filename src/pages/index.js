@@ -66,6 +66,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
       });
     }
   }, [error]);
+
   return (
     <>
       <Head>

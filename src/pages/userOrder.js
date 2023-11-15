@@ -12,6 +12,8 @@ const GET_USER_ORDERS = gql`
       customerName
       status
       totalAmount
+      orderApprovedAt
+      orderCompletedAt
     }
   }
 `;
@@ -33,7 +35,15 @@ const UserOrder = ({ user }) => {
         return "Invalid Date";
       }
       const date = new Date(dateString);
-      return date.toLocaleDateString();
+      const options = {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      };
+      return date.toLocaleString(undefined, options);
     } catch (error) {
       console.error("Error parsing date:", error);
       return "Invalid Date";
@@ -90,15 +100,18 @@ const UserOrder = ({ user }) => {
                     </p>
                   </div>
                   <div className="text-right justify-normal lg:pr-8 py-2">
-                    {order.status === "pending" && (
+                    {order.status === "Pending" && (
                       <p className="text-base text-yellow-400">
                         {order.status}
                       </p>
                     )}
-                    {order.status === "completed" && (
+                    {order.status === "Completed" && (
                       <p className="text-base text-green-600">{order.status}</p>
                     )}
-                    {order.status === "cancelled" && (
+                    {order.status === "Confirmed" && (
+                      <p className="text-base text-blue-500">{order.status}</p>
+                    )}
+                    {order.status === "Cancelled" && (
                       <p className="text-base text-red-700">{order.status}</p>
                     )}
 
