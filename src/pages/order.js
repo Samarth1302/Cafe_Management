@@ -33,16 +33,6 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
 
   useEffect(() => {
     if (Object.keys(cart).length === 0) {
-      toast.error("Cart empty! Redirecting to menu.", {
-        position: "top-left",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
       router.push(process.env.NEXT_PUBLIC_HOST);
     }
   }, [cart]);
@@ -59,7 +49,6 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       price: item.price,
     };
   });
-  console.log(cart);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem("myUser"));
@@ -81,7 +70,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       if (errors) {
         console.error(errors);
       }
-      if (data.placeOrder.status === "pending") {
+      if (data.placeOrder) {
         toast.success("Yayy! Order placed", {
           position: "top-left",
           autoClose: 1500,
