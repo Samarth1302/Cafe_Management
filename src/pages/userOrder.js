@@ -53,7 +53,10 @@ const UserOrder = () => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     if (data) {
-      setOrders(data.userOrders);
+      const sortedOrders = data.userOrders.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+      setOrders(sortedOrders);
       setLoadingData(false);
     }
   }, [data]);
@@ -83,7 +86,7 @@ const UserOrder = () => {
       </Head>
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
         {loadingData ? (
-          <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-black/40">
+          <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-slate-950">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
           </div>
         ) : (
