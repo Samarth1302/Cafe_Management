@@ -53,11 +53,13 @@ const UserOrder = () => {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     if (data) {
-      const sortedOrders = data.userOrders.sort((a, b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
-      setOrders(sortedOrders);
-      setLoadingData(false);
+      if (data && data.userOrders && Array.isArray(data.userOrders)) {
+        const sortedOrders = [...data.userOrders].sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        setOrders(sortedOrders);
+        setLoadingData(false);
+      }
     }
   }, [data]);
 
