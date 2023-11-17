@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
 
 const GET_ORDER = gql`
@@ -22,20 +24,29 @@ const GET_ORDER = gql`
   }
 `;
 
-const Summary = ({ order }) => {
+const Summary = (user) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
+  const [loadingData, setLoadingData] = useState(true);
   const router = useRouter();
-  const { orderId } = router.query;
+  const { slug } = router.query;
+  const [order, setOrder] = useState([]);
 
   const { error, data } = useQuery(GET_ORDER, {
-    variables: { orderId },
+    variables: { orderId: slug },
     context: {
       headers: {
         authorization: token || "",
       },
     },
   });
+  useEffect(() => {
+    if (data) {
+      setOrder(data.findOrder);
+      setLoadingData(false);
+    }
+  }, [data]);
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, {
@@ -51,7 +62,6 @@ const Summary = ({ order }) => {
     }
   }, [error]);
 
-  const order = data.findOrder;
   return (
     <>
       <Head>
@@ -61,42 +71,55 @@ const Summary = ({ order }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
-        <div className="w-full max-w-2xl">
-          <div key={order.id} className="my-4 p-4 bg-slate-800 rounded-lg">
-            <div className="flex items-center justify-between">
-              <div className="text-left lg:pl-10">
-                <h3 className="text-white text-lg">Order ID: {order.id}</h3>
-              </div>
-              <div className="text-right justify-normal lg:pr-8 py-2">
-                {order.status === "Pending" && (
-                  <p className="text-base text-yellow-400">{order.status}</p>
-                )}
-                <p className="text-base ">Total: ₹{order.totalAmount}</p>
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <h4 className="text-lg font-semibold mb-2">Cart Items:</h4>
-              {order.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between items-center mb-2"
-                >
-                  <p className="text-base">{item.name}</p>
-                  <p className="text-base">Quantity: {item.quantity}</p>
-                </div>
-              ))}
-            </div>
-            {order.status === "Pending" && (
-              <button className="bg-green-500 text-white px-4 py-2 mt-4 rounded">
-                Confirm Order
-              </button>
-            )}
-            <button className="bg-blue-500 text-white px-4 py-2 mt-2 rounded">
-              Mark as Paid
-            </button>
+        {loadingData ? (
+          <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-black/40">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
           </div>
-        </div>
+        ) : (
+          <div className="w-full max-w-2xl">
+            <div key={order.id} className="my-4 p-4 bg-slate-800 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="text-left lg:pl-10">
+                  <h3 className="text-white text-lg">Order ID: {order.id}</h3>
+                </div>
+                <div className="text-right justify-normal lg:pr-8 py-2">
+                  {order.status === "Pending" && (
+                    <p className="text-base text-yellow-400">{order.status}</p>
+                  )}
+                  <p className="text-base ">Total: ₹{order.totalAmount}</p>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <h4 className="text-lg font-semibold mb-2">Cart Items:</h4>
+                {order.items.map((item) => (
+                  <div
+                    key={item.name}
+                    className="flex justify-between items-center mb-2"
+                  >
+                    <p className="text-base">{item.name}</p>
+                    <p className="text-base">Quantity: {item.quantity}</p>
+                  </div>
+                ))}
+              </div>
+              {user.role !== "customer" && (
+                <div className="mt-10 text-white">
+                  {order.status === "Pending" && (
+                    <button className="bg-green-500 px-4 mx-2 py-2  text-white rounded">
+                      Confirm Order
+                    </button>
+                  )}
+                  {order.status !== "Completed" &&
+                    order.status !== "Cancelled" && (
+                      <button className="bg-blue-500 mx-2 px-4 py-2 rounded">
+                        Mark as Paid
+                      </button>
+                    )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
