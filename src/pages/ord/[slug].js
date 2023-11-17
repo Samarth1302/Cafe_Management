@@ -61,6 +61,7 @@ const Summary = (user) => {
       });
     }
   }, [error]);
+  const handleConfirmButton = () => {};
 
   return (
     <>
@@ -80,11 +81,23 @@ const Summary = (user) => {
             <div key={order.id} className="my-4 p-4 bg-slate-800 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="text-left lg:pl-10">
-                  <h3 className="text-white text-lg">Order ID: {order.id}</h3>
+                  <h3 className="text-white text-lg">
+                    Username: {order.customerName}
+                  </h3>
+                  <h3 className="text-white text-base">Order ID: {order.id}</h3>
                 </div>
                 <div className="text-right justify-normal lg:pr-8 py-2">
                   {order.status === "Pending" && (
                     <p className="text-base text-yellow-400">{order.status}</p>
+                  )}
+                  {order.status === "Completed" && (
+                    <p className="text-base text-green-600">{order.status}</p>
+                  )}
+                  {order.status === "Confirmed" && (
+                    <p className="text-base text-blue-500">{order.status}</p>
+                  )}
+                  {order.status === "Cancelled" && (
+                    <p className="text-base text-red-700">{order.status}</p>
                   )}
                   <p className="text-base ">Total: ₹{order.totalAmount}</p>
                 </div>
@@ -105,7 +118,10 @@ const Summary = (user) => {
               {user.role !== "customer" && (
                 <div className="mt-10 text-white">
                   {order.status === "Pending" && (
-                    <button className="bg-green-500 px-4 mx-2 py-2  text-white rounded">
+                    <button
+                      className="bg-green-500 px-4 mx-2 py-2  text-white rounded"
+                      onClick={handleConfirmButton}
+                    >
                       Confirm Order
                     </button>
                   )}

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DOMPurify from "dompurify";
 import {
   ApolloClient,
   InMemoryCache,
@@ -47,7 +48,13 @@ export default function App({ Component, pageProps }) {
           token,
           process.env.NEXT_PUBLIC_JWT_SECRET
         );
-        setUser(decodedToken);
+        const sanitizedUser = {
+          email: DOMPurify.sanitize(decodedToken.email),
+          username: DOMPurify.sanitize(decodedToken.username),
+          user_id: DOMPurify.sanitize(decodedToken.user_id),
+          role: DOMPurify.sanitize(decodedToken.role),
+        };
+        setUser(sanitizedUser);
       } catch (error) {
         localStorage.removeItem("myUser");
       }
@@ -58,8 +65,9 @@ export default function App({ Component, pageProps }) {
       if (event.key === "myCart") {
         try {
           const storedCart = JSON.parse(event.newValue);
-          setCart(storedCart);
-          computeTotal(storedCart);
+          const sanitizedCart = DOMPurify.sanitize(storedCart);
+          setCart(sanitizedCart);
+          computeTotal(sanitizedCart);
         } catch (error) {
           localStorage.removeItem("myCart");
         }
