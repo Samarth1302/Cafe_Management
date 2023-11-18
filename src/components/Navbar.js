@@ -68,7 +68,7 @@ const Navbar = ({
           <div className="flex items-center">
             <BsCart2
               onClick={toggleCart}
-              className=" text-xl md:text-2xl"
+              className="mr-1 text-xl md:text-2xl"
               style={iconStyle}
             />{" "}
             <div
@@ -79,12 +79,17 @@ const Navbar = ({
             </div>
           </div>
           {user.email && (
-            <Link href={"/userOrder"}>
-              <MdAccountCircle
-                className="text-xl mx-4 md:text-2xl"
-                style={iconStyle}
-              />
-            </Link>
+            <div>
+              <Link href={"/userOrder"}>
+                <MdAccountCircle
+                  className="text-xl mt-0 mx-4 md:text-2xl"
+                  style={iconStyle}
+                />
+              </Link>
+              <p className="text-center justify-center text-yellow-300 text-xs">
+                {user.username}
+              </p>
+            </div>
           )}
           {!user.email && (
             <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4">
@@ -96,7 +101,7 @@ const Navbar = ({
             <Link href={"/"}>
               <button
                 onClick={logout}
-                className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black sm:mx-1 lg:mx-4"
+                className="bg-yellow-400 ml-4 mb-2 px-2 py-1 rounded-md text-sm font-bold text-black sm:mx-1 lg:mx-4"
               >
                 Logout
               </button>

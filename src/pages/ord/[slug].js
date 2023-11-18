@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
+import Link from "next/link";
 
 const GET_ORDER = gql`
   query FindOrder($orderId: ID!) {
@@ -24,6 +25,15 @@ const GET_ORDER = gql`
   }
 `;
 
+const CONFIRM_ORDER = gql`
+  mutation ConfirmOrder($orderId: ID!) {
+    confirmOrder(orderId: $orderId) {
+      orderApprovedAt
+      status
+      id
+    }
+  }
+`;
 const Summary = (user) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
@@ -47,6 +57,10 @@ const Summary = (user) => {
     }
   }, [data]);
 
+  const handleGoBack = () => {
+    router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
+  };
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, {
@@ -61,7 +75,44 @@ const Summary = (user) => {
       });
     }
   }, [error]);
-  const handleConfirmButton = () => {};
+
+  const [confirmOrder] = useMutation(CONFIRM_ORDER);
+
+  const handleConfirmButton = async () => {
+    try {
+      const { data } = await confirmOrder({
+        variables: { orderId: slug },
+        context: {
+          headers: {
+            authorization: token || "",
+          },
+        },
+      });
+      if (data) {
+        toast.success("Order confirmed", {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
 
   return (
     <>
@@ -78,6 +129,14 @@ const Summary = (user) => {
           </div>
         ) : (
           <div className="w-full max-w-2xl">
+            <div className="mt-4">
+              <button
+                className="bg-white text-sm font-bold text-slate-900 px-2 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white"
+                onClick={handleGoBack}
+              >
+                Back to Orders
+              </button>
+            </div>
             <div key={order.id} className="my-4 p-4 bg-slate-800 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="text-left lg:pl-10">
@@ -119,7 +178,7 @@ const Summary = (user) => {
                 <div className="mt-10 text-white">
                   {order.status === "Pending" && (
                     <button
-                      className="bg-green-500 px-4 mx-2 py-2  text-white rounded"
+                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
                       onClick={handleConfirmButton}
                     >
                       Confirm Order
@@ -127,7 +186,7 @@ const Summary = (user) => {
                   )}
                   {order.status !== "Completed" &&
                     order.status !== "Cancelled" && (
-                      <button className="bg-blue-500 mx-2 px-4 py-2 rounded">
+                      <button className="bg-green-500 mx-2 px-4 py-2 rounded">
                         Mark as Paid
                       </button>
                     )}
