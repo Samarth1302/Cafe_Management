@@ -4,8 +4,6 @@ import { useQuery, gql, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Head from "next/head";
-import Link from "next/link";
-
 const GET_ORDER = gql`
   query FindOrder($orderId: ID!) {
     findOrder(orderId: $orderId) {
@@ -25,12 +23,13 @@ const GET_ORDER = gql`
   }
 `;
 
-const CONFIRM_ORDER = gql`
-  mutation ConfirmOrder($orderId: ID!) {
-    confirmOrder(orderId: $orderId) {
-      orderApprovedAt
+const UPDATE_ORDER = gql`
+  mutation OrderStatus($orderId: ID!, $newStatus: String!) {
+    changeOrderStatus(orderId: $orderId, newStatus: $newStatus) {
+      createdAt
       status
-      id
+      orderApprovedAt
+      orderCompletedAt
     }
   }
 `;
@@ -76,12 +75,12 @@ const Summary = (user) => {
     }
   }, [error]);
 
-  const [confirmOrder] = useMutation(CONFIRM_ORDER);
+  const [updateOrder] = useMutation(UPDATE_ORDER);
 
-  const handleConfirmButton = async () => {
+  const handleButton = async (stat) => {
     try {
-      const { data } = await confirmOrder({
-        variables: { orderId: slug },
+      const { data } = await updateOrder({
+        variables: { orderId: slug, newStatus: stat },
         context: {
           headers: {
             authorization: token || "",
@@ -89,7 +88,7 @@ const Summary = (user) => {
         },
       });
       if (data) {
-        toast.success("Order confirmed", {
+        toast.success("Order status updated", {
           position: "top-left",
           autoClose: 1500,
           hideProgressBar: false,
@@ -99,6 +98,7 @@ const Summary = (user) => {
           progress: undefined,
           theme: "dark",
         });
+        router.reload();
       }
     } catch (error) {
       toast.error(error.message, {
@@ -179,14 +179,17 @@ const Summary = (user) => {
                   {order.status === "Pending" && (
                     <button
                       className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
-                      onClick={handleConfirmButton}
+                      onClick={() => handleButton("Confirmed")}
                     >
                       Confirm Order
                     </button>
                   )}
                   {order.status !== "Completed" &&
                     order.status !== "Cancelled" && (
-                      <button className="bg-green-500 mx-2 px-4 py-2 rounded">
+                      <button
+                        className="bg-green-500 mx-2 px-4 py-2 rounded"
+                        onClick={() => handleButton("Completed")}
+                      >
                         Mark as Paid
                       </button>
                     )}

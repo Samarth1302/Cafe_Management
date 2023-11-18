@@ -44,6 +44,7 @@ const Navbar = ({
   const ref = useRef();
   const iconStyle = {
     color: "yellow",
+    marginTop: "-8px",
   };
 
   return (
@@ -65,18 +66,18 @@ const Navbar = ({
             sidebar && "md:right-60 sm:right-2"
           } md:top-5 sm:top-6 ml-40  flex`}
         >
-          <div className="flex items-center">
-            <BsCart2
-              onClick={toggleCart}
-              className="mr-1 text-xl md:text-2xl"
-              style={iconStyle}
-            />{" "}
-            <div
+          <div className="mr-3 flex flex-col items-center">
+            <p
               className="text-yellow-400 text-sm md:text-base"
-              style={{ position: "relative", top: "-16px", right: "16px" }}
+              style={{ marginTop: "-1rem" }}
             >
               {cartCount}
-            </div>
+            </p>
+            <BsCart2
+              onClick={toggleCart}
+              className="text-xl md:text-2xl"
+              style={iconStyle}
+            />
           </div>
           {user.email && (
             <div>

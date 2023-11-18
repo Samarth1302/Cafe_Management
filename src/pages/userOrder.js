@@ -94,44 +94,50 @@ const UserOrder = () => {
         ) : (
           <div className="w-full max-w-2xl">
             {orders.map((order) => (
-              <Link href={`/ord/${order.id}`}>
+              <Link key={order.id} href={`/ord/${order.id}`}>
                 <div
                   key={order.id}
                   className="my-4 p-4 bg-slate-800 rounded-lg"
                 >
                   <div className="flex items-center justify-between">
                     <div className="text-left lg:pl-10">
-                      <h3 className="text-white text-lg">
-                        Order ID: {order.id}
+                      <h3 className="text-white text-base">
+                        Name:{" "}
+                        {order.customerName.charAt(0).toUpperCase() +
+                          order.customerName.slice(1)}
                       </h3>
-                      <p className="mt-1 text-base">
-                        Customer Name: {order.customerName}
-                      </p>
                       <p className="text-base">
                         Date: {formatStringToDateString(order.createdAt)}
                       </p>
+                      <p className="mt-1 text-sm">ID: {order.id}</p>
                     </div>
                     <div className="text-right justify-normal lg:pr-8 py-2">
                       {order.status === "Pending" && (
                         <p className="text-base text-yellow-400">
-                          {order.status}
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
                         </p>
                       )}
                       {order.status === "Completed" && (
                         <p className="text-base text-green-600">
-                          {order.status}
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
                         </p>
                       )}
                       {order.status === "Confirmed" && (
                         <p className="text-base text-blue-500">
-                          {order.status}
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
                         </p>
                       )}
                       {order.status === "Cancelled" && (
-                        <p className="text-base text-red-700">{order.status}</p>
+                        <p className="text-base text-red-700">
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
+                        </p>
                       )}
 
-                      <p className="text-base ">Total: ₹{order.totalAmount}</p>
+                      <p className="text-sm ">Total: ₹{order.totalAmount}</p>
                     </div>
                   </div>
                 </div>
