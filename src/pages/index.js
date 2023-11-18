@@ -107,7 +107,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
                     className="flex m-2 text-sm text-white bg-slate-700 
                   border-white border-2 py-1  px-2 focus:outline-none hover:bg-slate-600 rounded "
                   >
-                    Add it!
+                    Add
                   </button>
                 </div>
               </div>

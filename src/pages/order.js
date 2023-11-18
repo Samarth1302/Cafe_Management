@@ -6,6 +6,8 @@ import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { FaTimesCircle } from "react-icons/fa";
 import { useRouter } from "next/router";
 import { gql, useMutation } from "@apollo/client";
+import Image from "next/image";
+import Link from "next/link";
 
 const PLACE_ORDER = gql`
   mutation PlaceOrder($orderInput: orderInput) {
@@ -21,7 +23,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
   const calculateItemTotal = (qty, price) => {
     return qty * price;
   };
-  const [customerName, setCustomerName] = useState(user.username);
+  const [customerName, setCustomerName] = useState();
   const handleInputChange = (e) => {
     setCustomerName(e.target.value);
   };
@@ -30,12 +32,6 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
     color: "yellow",
     cursor: "pointer",
   };
-
-  useEffect(() => {
-    if (Object.keys(cart).length === 0) {
-      router.push(process.env.NEXT_PUBLIC_HOST);
-    }
-  }, [cart]);
 
   const [placeOrder] = useMutation(PLACE_ORDER);
   const handleAdClick = () => {
@@ -82,9 +78,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
           theme: "dark",
         });
         clearCart();
-        setTimeout(() => {
-          router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
-        }, 1000);
+        router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
@@ -117,7 +111,24 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
         <meta name="description" content="Your order details." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {Object.keys(cart).length !== 0 && (
+      {Object.keys(cart).length === 0 ? (
+        <div className="min-h-screen flex justify-center text-center bg-slate-900">
+          <div className=" mt-10 ">
+            <Image
+              src="/empty-cart.jpg"
+              alt="Empty Cart needs to be filled"
+              width={400}
+              height={300}
+              className="mb-4"
+            />
+            <Link href={"/"}>
+              <button className=" bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white">
+                Go to Menu page
+              </button>
+            </Link>
+          </div>
+        </div>
+      ) : (
         <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
           {user.role !== "customer" && (
             <div className="w-full justify-center flex flex-row text-center p-2">
