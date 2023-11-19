@@ -19,6 +19,9 @@ export default function RouteLoader() {
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
 
+    const handleBeforeUnload = () => setLoading(true);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
       router.events.off("routeChangeStart", handleStart);
       router.events.off("routeChangeComplete", handleComplete);

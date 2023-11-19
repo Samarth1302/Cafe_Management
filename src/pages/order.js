@@ -23,7 +23,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
   const calculateItemTotal = (qty, price) => {
     return qty * price;
   };
-  const [customerName, setCustomerName] = useState();
+  const [customerName, setCustomerName] = useState("");
   const handleInputChange = (e) => {
     setCustomerName(e.target.value);
   };
@@ -117,9 +117,9 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
             <Image
               src="/empty-cart.jpg"
               alt="Empty Cart needs to be filled"
-              width={400}
+              width={500}
               height={300}
-              className="mb-4"
+              className="mb-10"
             />
             <Link href={"/"}>
               <button className=" bg-white text-lg font-bold text-slate-900 px-6 py-3 rounded focus:bg-slate-900 focus:border-2 focus:border-white focus:text-white">
