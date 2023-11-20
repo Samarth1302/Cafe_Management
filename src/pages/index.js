@@ -114,7 +114,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
             </div>
           ))
         )}
-        <div className="flex justify-center mt-4">
+        <div className="justify-center mt-4">
           {!loadingData && (
             <Link href={"/order"} legacyBehavior>
               <button

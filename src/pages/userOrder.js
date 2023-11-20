@@ -92,7 +92,8 @@ const UserOrder = () => {
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
           </div>
         ) : (
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-2xl overflow-y-auto flex-auto">
+            <p className="text-white text-2xl text-center">Orders</p>
             {orders.map((order) => (
               <Link key={order.id} href={`/ord/${order.id}`}>
                 <div
