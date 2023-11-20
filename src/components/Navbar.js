@@ -7,6 +7,7 @@ import {
   AiOutlineMinusCircle,
 } from "react-icons/ai";
 import { MdAccountCircle } from "react-icons/md";
+import { FiAlignJustify } from "react-icons/fi";
 import { useRouter } from "next/router";
 
 const Navbar = ({
@@ -34,14 +35,20 @@ const Navbar = ({
   }, []);
   const [sidebar, setSidebar] = useState(false);
   const router = useRouter();
+  const [hamMenu, setHam] = useState(false);
   const [cartCount, setCartCount] = useState(Object.keys(cart).length);
   const toggleCart = () => {
     setSidebar(!sidebar);
   };
+  const toggleHam = () => {
+    setHam(!hamMenu);
+  };
   useEffect(() => {
     setCartCount(Object.keys(cart).length);
   }, [cart]);
+
   const ref = useRef();
+
   const iconStyle = {
     color: "yellow",
     marginTop: "-8px",
@@ -54,7 +61,65 @@ const Navbar = ({
           !sidebar && "overflow-hidden"
         }`}
       >
-        <div className="relative left-10 mx-2 flex content-end md:mx-2">
+        <div className="relative left-5 mx-2 flex content-end md:mx-2">
+          <div className="text-3xl items-center py-1 mr-5">
+            <FiAlignJustify
+              style={{ color: "#d3ad15", cursor: "pointer" }}
+              onClick={toggleHam}
+            />
+            {hamMenu && (
+              <aside
+                id="sidebar-multi-level-sidebar"
+                className="fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0"
+                aria-label="Sidebar"
+              >
+                <div className="h-full px-3 py-4 overflow-y-auto bg-slate-800">
+                  <span
+                    onClick={toggleHam}
+                    className="absolute top-5 right-2 cursor-pointer text-2xl"
+                  >
+                    <AiOutlineCloseCircle
+                      size={30}
+                      style={{ color: "white" }}
+                    />
+                  </span>
+                  <ul className="space-y-6 mt-10 text-center justify-evenly text-lg text-white font-medium">
+                    {user.role === "admin" && (
+                      <Link href={"/"}>
+                        <li className="my-3 hover:text-blue-400 hover:bg-slate-900 rounded-full">
+                          MENU
+                        </li>
+                      </Link>
+                    )}
+                    {user.role === "admin" && (
+                      <Link href={"/"}>
+                        <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
+                          EMPLOYEES
+                        </li>
+                      </Link>
+                    )}
+                    {user.email && (
+                      <Link href={"/userOrder"}>
+                        <li className="my-3 hover:text-blue-400 hover:bg-slate-900 rounded-full">
+                          ORDERS
+                        </li>
+                      </Link>
+                    )}
+                    {user.email && (
+                      <Link href={"/"}>
+                        <li
+                          className="my-3 hover:text-red-400 hover:bg-slate-900 rounded-full"
+                          onClick={logout}
+                        >
+                          LOGOUT
+                        </li>
+                      </Link>
+                    )}
+                  </ul>
+                </div>
+              </aside>
+            )}
+          </div>
           <Link href={"/"}>
             <div className=" text-yellow-400 md:text-3xl sm:text-sm">
               MICRO CAFE
@@ -81,12 +146,10 @@ const Navbar = ({
           </div>
           {user.email && (
             <div>
-              <Link href={"/userOrder"}>
-                <MdAccountCircle
-                  className="text-xl mt-0 mx-4 md:text-2xl"
-                  style={iconStyle}
-                />
-              </Link>
+              <MdAccountCircle
+                className="text-xl mt-0 mx-4 mr-6 md:text-2xl"
+                style={iconStyle}
+              />
               <p className="text-center justify-center text-yellow-300 text-xs">
                 {user.username}
               </p>
@@ -98,16 +161,6 @@ const Navbar = ({
               <Link href={"/signup"}>Sign-up</Link>
             </button>
           )}{" "}
-          {user.email && (
-            <Link href={"/"}>
-              <button
-                onClick={logout}
-                className="bg-yellow-400 ml-4 mb-2 px-2 py-1 rounded-md text-sm font-bold text-black sm:mx-1 lg:mx-4"
-              >
-                Logout
-              </button>
-            </Link>
-          )}
         </div>
         <div
           ref={ref}

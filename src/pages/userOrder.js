@@ -125,7 +125,7 @@ const UserOrder = () => {
                             order.status.slice(1)}
                         </p>
                       )}
-                      {order.status === "Confirmed" && (
+                      {order.status === "Preparing" && (
                         <p className="text-base text-blue-500">
                           {order.status.charAt(0).toUpperCase() +
                             order.status.slice(1)}

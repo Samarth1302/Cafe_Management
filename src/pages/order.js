@@ -23,7 +23,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
   const calculateItemTotal = (qty, price) => {
     return qty * price;
   };
-  const [customerName, setCustomerName] = useState("");
+  const [customerName, setCustomerName] = useState(user.username);
   const handleInputChange = (e) => {
     setCustomerName(e.target.value);
   };
@@ -132,10 +132,10 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
         <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
           {user.role !== "customer" && (
             <div className="w-full justify-center flex flex-row text-center p-2">
-              <p className=" content-center my-2 px-4">Customer Name:</p>
+              <p className=" content-center my-2 px-4">Username:</p>
               <input
                 type="text"
-                placeholder="Enter customer name"
+                placeholder="Enter username"
                 value={customerName}
                 onChange={handleInputChange}
                 className="bg-white text-slate-900 px-4 py-2 mb-4 rounded"

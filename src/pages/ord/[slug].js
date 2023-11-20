@@ -152,7 +152,7 @@ const Summary = (user) => {
                   {order.status === "Completed" && (
                     <p className="text-base text-green-600">{order.status}</p>
                   )}
-                  {order.status === "Confirmed" && (
+                  {order.status === "Preparing" && (
                     <p className="text-base text-blue-500">{order.status}</p>
                   )}
                   {order.status === "Cancelled" && (
@@ -179,7 +179,7 @@ const Summary = (user) => {
                   {order.status === "Pending" && (
                     <button
                       className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
-                      onClick={() => handleButton("Confirmed")}
+                      onClick={() => handleButton("Preparing")}
                     >
                       Confirm Order
                     </button>
