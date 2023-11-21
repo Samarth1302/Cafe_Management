@@ -19,7 +19,10 @@ const GET_USER_ORDERS = gql`
   }
 `;
 
-const UserOrder = () => {
+
+
+const UserOrder = ({user}) => {
+
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
   const [loadingData, setLoadingData] = useState(true);

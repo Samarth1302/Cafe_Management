@@ -33,6 +33,13 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
     cursor: "pointer",
   };
 
+  useEffect(() => {
+    if(user.role!=="customer"){
+      setCustomerName("")
+    }
+  }, [user])
+  
+
   const [placeOrder] = useMutation(PLACE_ORDER);
   const handleAdClick = () => {
     router.push(process.env.NEXT_PUBLIC_HOST);
@@ -104,6 +111,9 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       });
     }
   };
+
+
+
   return (
     <>
       <Head>
@@ -142,6 +152,20 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
               />
             </div>
           )}
+
+          {user.role === "customer" && (
+            <div className="w-full justify-center flex flex-row text-center p-2">
+              <p className=" content-center my-2 px-4">Username:</p>
+              <input
+                type="text"
+                placeholder="Enter username"
+                value={customerName}
+                onChange={handleInputChange}
+                className="bg-white text-slate-900 px-4 py-2 mb-4 rounded"
+              />
+            </div>
+          )}
+
           <div className="w-full max-w-2xl">
             {Object.keys(cart).map((k) => {
               const item = cart[k];

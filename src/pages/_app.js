@@ -98,8 +98,12 @@ export default function App({ Component, pageProps }) {
   };
 
   const logout = () => {
+    // localStorage.clear();
     localStorage.removeItem("myUser");
+    localStorage.removeItem("myCart");
     setUser({});
+    setCart({});
+    setTotal(0);
     setKey(Math.random());
     router.push(process.env.NEXT_PUBLIC_HOST);
   };

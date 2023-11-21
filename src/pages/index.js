@@ -52,6 +52,8 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
     }
   }, [data]);
 
+
+
   useEffect(() => {
     if (error) {
       toast.error(error.message, {

@@ -33,7 +33,7 @@ const UPDATE_ORDER = gql`
     }
   }
 `;
-const Summary = (user) => {
+const Summary = ({user}) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
   const [loadingData, setLoadingData] = useState(true);
@@ -55,6 +55,8 @@ const Summary = (user) => {
       setLoadingData(false);
     }
   }, [data]);
+
+
 
   const handleGoBack = () => {
     router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
@@ -155,6 +157,15 @@ const Summary = (user) => {
                   {order.status === "Preparing" && (
                     <p className="text-base text-blue-500">{order.status}</p>
                   )}
+                  {order.status === "Prepared" && (
+                    <p className="text-base text-blue-500">{order.status}</p>
+                  )}
+                  {order.status === "Served" && (
+                    <p className="text-base text-blue-500">{order.status}</p>
+                  )}
+                  {order.status === "Paid" && (
+                    <p className="text-base text-blue-500">{order.status}</p>
+                  )}
                   {order.status === "Cancelled" && (
                     <p className="text-base text-red-700">{order.status}</p>
                   )}
@@ -184,15 +195,51 @@ const Summary = (user) => {
                       Confirm Order
                     </button>
                   )}
-                  {order.status !== "Completed" &&
-                    order.status !== "Cancelled" && (
+
+{order.status === "Preparing" && (
+                    <button
+                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      onClick={() => handleButton("Prepared")}
+                    >
+                      Prepared
+                    </button>
+                  )}
+
+{order.status === "Prepared" && (
+                    <button
+                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      onClick={() => handleButton("Served")}
+                    >
+                      Served
+                    </button>
+                  )}
+
+{order.status === "Served" && (
+                    <button
+                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      onClick={() => handleButton("Completed")}
+                    >
+                      Paid
+                    </button>
+                  )}
+                  {/* {order.status === "Paid" && (
+                    <button
+                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      onClick={() => handleButton("")}
+                    >
+                      Paid
+                    </button>
+                  )} */}
+                  {/* {order.status !== "Completed" &&
+                    order.status !== "Cancelled" && 
+                     (
                       <button
                         className="bg-green-500 mx-2 px-4 py-2 rounded"
                         onClick={() => handleButton("Completed")}
                       >
                         Mark as Paid
                       </button>
-                    )}
+                    )} */}
                 </div>
               )}
             </div>
