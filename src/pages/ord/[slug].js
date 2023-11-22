@@ -33,7 +33,7 @@ const UPDATE_ORDER = gql`
     }
   }
 `;
-const Summary = ({user}) => {
+const Summary = ({ user }) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
   const [loadingData, setLoadingData] = useState(true);
@@ -56,10 +56,8 @@ const Summary = ({user}) => {
     }
   }, [data]);
 
-
-
   const handleGoBack = () => {
-    router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
+    router.push("/userOrder");
   };
 
   useEffect(() => {
@@ -100,7 +98,7 @@ const Summary = ({user}) => {
           progress: undefined,
           theme: "dark",
         });
-        router.reload();
+        router.push(`/ord/${slug}`);
       }
     } catch (error) {
       toast.error(error.message, {
@@ -196,7 +194,7 @@ const Summary = ({user}) => {
                     </button>
                   )}
 
-{order.status === "Preparing" && (
+                  {order.status === "Preparing" && (
                     <button
                       className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
                       onClick={() => handleButton("Prepared")}
@@ -205,7 +203,7 @@ const Summary = ({user}) => {
                     </button>
                   )}
 
-{order.status === "Prepared" && (
+                  {order.status === "Prepared" && (
                     <button
                       className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
                       onClick={() => handleButton("Served")}
@@ -214,7 +212,7 @@ const Summary = ({user}) => {
                     </button>
                   )}
 
-{order.status === "Served" && (
+                  {order.status === "Served" && (
                     <button
                       className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
                       onClick={() => handleButton("Completed")}

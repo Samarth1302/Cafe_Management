@@ -34,6 +34,9 @@ const Login = () => {
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const iconStyle = {
+    color: "yellow",
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -55,7 +58,7 @@ const Login = () => {
         setEmail("");
         setPass("");
         setTimeout(() => {
-          router.push(process.env.NEXT_PUBLIC_HOST);
+          router.push("/");
         }, 1000);
       } else {
         toast.error("Did not receive server data", {
@@ -152,7 +155,11 @@ const Login = () => {
                       onClick={handlePasswordVisibility}
                       className="absolute inset-y-0 right-0 pr-3 flex items-center leading-5 text-xl text-white cursor-pointer"
                     >
-                      {showPassword ? <AiFillEye /> : <AiFillEyeInvisible />}
+                      {showPassword ? (
+                        <AiFillEye style={iconStyle} />
+                      ) : (
+                        <AiFillEyeInvisible style={iconStyle} />
+                      )}
                     </span>
                   </div>
                 </div>

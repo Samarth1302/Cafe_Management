@@ -34,15 +34,14 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
   };
 
   useEffect(() => {
-    if(user.role!=="customer"){
-      setCustomerName("")
+    if (user.role !== "customer") {
+      setCustomerName("");
     }
-  }, [user])
-  
+  }, [user]);
 
   const [placeOrder] = useMutation(PLACE_ORDER);
   const handleAdClick = () => {
-    router.push(process.env.NEXT_PUBLIC_HOST);
+    router.push("/");
   };
   const itemsArray = Object.keys(cart).map((key) => {
     const item = cart[key];
@@ -85,7 +84,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
           theme: "dark",
         });
         clearCart();
-        router.push(`${process.env.NEXT_PUBLIC_HOST}/userOrder`);
+        router.push("/");
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
@@ -111,8 +110,6 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       });
     }
   };
-
-
 
   return (
     <>

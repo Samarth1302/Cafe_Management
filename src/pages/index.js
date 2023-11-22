@@ -38,7 +38,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
         theme: "dark",
       });
       setTimeout(() => {
-        router.push(`${process.env.NEXT_PUBLIC_HOST}/login`);
+        router.push("/login");
       }, 1000);
     } else {
       addtoCart(item.id, item.itemName, 1, item.itemPrice);
@@ -51,8 +51,6 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
       setLoadingData(false);
     }
   }, [data]);
-
-
 
   useEffect(() => {
     if (error) {

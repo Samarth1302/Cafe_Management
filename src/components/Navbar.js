@@ -84,15 +84,20 @@ const Navbar = ({
                     />
                   </span>
                   <ul className="space-y-6 mt-10 text-center justify-evenly text-lg text-white font-medium">
+                    <Link href={"/"}>
+                      <li className="my-3 hover:text-blue-400 hover:bg-slate-900 rounded-full">
+                        HOME
+                      </li>
+                    </Link>
                     {user.role === "admin" && (
                       <Link href={"/"}>
-                        <li className="my-3 hover:text-blue-400 hover:bg-slate-900 rounded-full">
-                          MENU
+                        <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
+                          EDIT MENU
                         </li>
                       </Link>
                     )}
                     {user.role === "admin" && (
-                      <Link href={"/"}>
+                      <Link href={"/employee"}>
                         <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
                           EMPLOYEES
                         </li>
