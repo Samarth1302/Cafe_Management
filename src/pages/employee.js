@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MdDelete } from "react-icons/md";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
@@ -30,6 +31,13 @@ const ADD_EMPLOYEE = gql`
   }
 `;
 
+const REMOVE_EMPLOYEE = gql`
+  mutation RemoveEmployee($userId: ID!) {
+    deleteEmployee(userId: $userId) {
+      id
+    }
+  }
+`;
 const EmployeeForm = ({ token, showForm, setShowForm }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -235,6 +243,9 @@ const EmployeePage = ({ user }) => {
   const [showForm, setShowForm] = useState(false);
   const { error, data } = useQuery(GET_EMPLOYEES);
 
+  const router = useRouter();
+  const [delEmployeee] = useMutation(REMOVE_EMPLOYEE);
+
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
@@ -259,6 +270,70 @@ const EmployeePage = ({ user }) => {
     }
   }, [error]);
 
+  const handleDelete = async (empID) => {
+    try {
+      const { data } = await delEmployeee({
+        variables: {
+          userId: empID,
+        },
+        context: {
+          headers: {
+            authorization: token || "",
+          },
+        },
+      });
+      if (data && data.deleteEmployee) {
+        const deletedEmployeeId = data.deleteEmployee.id;
+
+        if (deletedEmployeeId === null) {
+          toast.success("Employee removed from the system", {
+            position: "top-left",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          router.push("/employee");
+        } else {
+          toast.error("Failed to remove employee", {
+            position: "top-left",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      } else {
+        toast.error("Invalid response from the server", {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
   const handleButton = async () => {
     setShowForm(true);
   };
@@ -282,14 +357,20 @@ const EmployeePage = ({ user }) => {
                   key={employee.id}
                   className="my-4 p-4 bg-slate-800 rounded-lg"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="text-left lg:pl-10">
-                      <h3 className="text-white text-base">
-                        UserName: {employee.username}
-                      </h3>
-                      <p className="text-base">Email: {employee.email}</p>
-                      <p className="mt-1 text-sm">ID: {employee.id}</p>
-                    </div>
+                  <div className="text-left lg:pl-10">
+                    <h3 className="text-white text-base">
+                      Username: {employee.username}
+                    </h3>
+                    <p className="text-base">Email: {employee.email}</p>
+                    <p className="mt-1 text-sm">ID: {employee.id}</p>
+                  </div>
+                  <div className="-mt-8 text-right">
+                    <button
+                      onClick={() => handleDelete(employee.id)}
+                      className="bg-red-500 text-white text-lg px-4 py-2 rounded focus:bg-slate-900 focus:border-2 focus:border-red-600 focus:text-red-500"
+                    >
+                      <MdDelete />
+                    </button>
                   </div>
                 </div>
               ))}

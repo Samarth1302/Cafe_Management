@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import Confirm from "@/components/Confirm";
 import RouteLoader from "@/components/Loader";
 import "@/styles/globals.css";
 import jwt from "jsonwebtoken";
@@ -21,6 +22,7 @@ export default function App({ Component, pageProps }) {
   const [total, setTotal] = useState(0);
   const [user, setUser] = useState({});
   const [key, setKey] = useState();
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
   const router = useRouter();
 
   const [progress, setProgress] = useState(0);
@@ -87,6 +89,10 @@ export default function App({ Component, pageProps }) {
     cache: new InMemoryCache(),
   });
 
+  const handleLogout = () => {
+    setShowLogoutConfirmation(true);
+  };
+
   const computeTotal = (cart) => {
     let subt = 0;
     if (!cart) return subt;
@@ -97,7 +103,7 @@ export default function App({ Component, pageProps }) {
     setTotal(subt);
   };
 
-  const logout = () => {
+  const confirmLogout = () => {
     localStorage.removeItem("myUser");
     localStorage.removeItem("myCart");
     setUser({});
@@ -105,6 +111,10 @@ export default function App({ Component, pageProps }) {
     setTotal(0);
     setKey(Math.random());
     router.push("/");
+    setShowLogoutConfirmation(false);
+  };
+  const cancelLogout = () => {
+    setShowLogoutConfirmation(false);
   };
 
   const saveCart = (cart) => {
@@ -176,7 +186,7 @@ export default function App({ Component, pageProps }) {
             removefromCart={removefromCart}
             clearCart={clearCart}
             total={total}
-            logout={logout}
+            logout={handleLogout}
           />
         )}
 
@@ -190,6 +200,13 @@ export default function App({ Component, pageProps }) {
           {...pageProps}
         />
       </ApolloProvider>
+      {showLogoutConfirmation && (
+        <Confirm
+          message="Are you sure you want to logout?"
+          onConfirm={confirmLogout}
+          onCancel={cancelLogout}
+        />
+      )}
       <Footer />
     </>
   );

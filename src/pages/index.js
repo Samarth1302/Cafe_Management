@@ -81,40 +81,42 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
           </div>
         ) : (
-          items.map((item) => (
-            <div
-              key={item.id}
-              className="lg:w-1/5 md:w-1/3 p-4 w-96 h-48 cursor-pointer shadow-lg shadow-slate-800 m-5 rounded-lg border-slate-800 border-r-2"
-            >
-              <div className="flex mt-4 text-center">
-                <div className="mr-4">
-                  <Image
-                    className="m-auto block"
-                    src={item.itemImage}
-                    alt={item.itemName}
-                    width={140}
-                    height={100}
-                  ></Image>
-                </div>
-                <div className="text-left">
-                  <h3 className="text-white text-lg">{item.itemName}</h3>
-                  <p className="mt-1 text-base">₹ {item.itemPrice}</p>
-                  <p className="text-base">
-                    In cart: {cart[item.id] ? cart[item.id].qty : 0}
-                  </p>
-                  <button
-                    onClick={() => handleButton(item)}
-                    className="flex m-2 text-sm text-white bg-slate-700 
+          <div className="flex justify-center flex-wrap">
+            {items.map((item) => (
+              <div
+                key={item.id}
+                className="lg:w-1/5 md:w-1/3 p-4 w-96 h-48 cursor-pointer shadow-lg shadow-slate-800 m-5 rounded-lg border-slate-800 border-r-2"
+              >
+                <div className="flex mt-4 text-center">
+                  <div className="mr-4">
+                    <Image
+                      className="m-auto block"
+                      src={item.itemImage}
+                      alt={item.itemName}
+                      width={140}
+                      height={100}
+                    ></Image>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-white text-lg">{item.itemName}</h3>
+                    <p className="mt-1 text-base">₹ {item.itemPrice}</p>
+                    <p className="text-base">
+                      In cart: {cart[item.id] ? cart[item.id].qty : 0}
+                    </p>
+                    <button
+                      onClick={() => handleButton(item)}
+                      className="flex m-2 text-sm text-white bg-slate-700 
                   border-white border-2 py-1  px-2 focus:outline-none hover:bg-slate-600 rounded "
-                  >
-                    Add
-                  </button>
+                    >
+                      Add
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
-        <div className="justify-center mt-4">
+        <div className="mt-4 justify-center ">
           {!loadingData && (
             <Link href={"/order"} legacyBehavior>
               <button
