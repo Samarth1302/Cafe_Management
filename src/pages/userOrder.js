@@ -19,10 +19,7 @@ const GET_USER_ORDERS = gql`
   }
 `;
 
-
-
-const UserOrder = ({user}) => {
-
+const UserOrder = () => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
   const [loadingData, setLoadingData] = useState(true);
@@ -123,12 +120,24 @@ const UserOrder = ({user}) => {
                         </p>
                       )}
                       {order.status === "Completed" && (
-                        <p className="text-base text-green-600">
+                        <p className="text-base text-green-500">
                           {order.status.charAt(0).toUpperCase() +
                             order.status.slice(1)}
                         </p>
                       )}
                       {order.status === "Preparing" && (
+                        <p className="text-base text-blue-300">
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
+                        </p>
+                      )}
+                      {order.status === "Prepared" && (
+                        <p className="text-base text-blue-400">
+                          {order.status.charAt(0).toUpperCase() +
+                            order.status.slice(1)}
+                        </p>
+                      )}
+                      {order.status === "Served" && (
                         <p className="text-base text-blue-500">
                           {order.status.charAt(0).toUpperCase() +
                             order.status.slice(1)}
