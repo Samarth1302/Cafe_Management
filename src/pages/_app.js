@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DOMPurify from "dompurify";
 import {
@@ -128,7 +128,10 @@ export default function App({ Component, pageProps }) {
     }
     const newCart = { ...cart };
     if (itemId in cart) {
-      newCart[itemId].qty += qty;
+      if (newCart[itemId].qty + qty > 10) {
+      } else {
+        newCart[itemId].qty += qty;
+      }
     } else {
       newCart[itemId] = { name, qty: qty, price };
     }

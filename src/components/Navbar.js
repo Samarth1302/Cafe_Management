@@ -203,7 +203,8 @@ const Navbar = ({
                         onClick={() => {
                           addtoCart(k, cart[k].name, 1, cart[k].price);
                         }}
-                        className="cursor-pointer"
+                        className="cursor-pointer disabled:cursor-not-allowed"
+                        aria-disabled={cart[k] && cart[k].qty === 10}
                       />
                     </div>
                   </div>

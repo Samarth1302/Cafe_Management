@@ -153,15 +153,12 @@ const Summary = ({ user }) => {
                     <p className="text-base text-green-600">{order.status}</p>
                   )}
                   {order.status === "Preparing" && (
-                    <p className="text-base text-blue-500">{order.status}</p>
+                    <p className="text-base text-blue-300">{order.status}</p>
                   )}
                   {order.status === "Prepared" && (
-                    <p className="text-base text-blue-500">{order.status}</p>
+                    <p className="text-base text-blue-400">{order.status}</p>
                   )}
                   {order.status === "Served" && (
-                    <p className="text-base text-blue-500">{order.status}</p>
-                  )}
-                  {order.status === "Paid" && (
                     <p className="text-base text-blue-500">{order.status}</p>
                   )}
                   {order.status === "Cancelled" && (
@@ -187,7 +184,7 @@ const Summary = ({ user }) => {
                 <div className="mt-10 text-white">
                   {order.status === "Pending" && (
                     <button
-                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      className="bg-blue-300 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-blue-300 hover:bg-slate-800 hover:border-blue-300 hover:text-white rounded"
                       onClick={() => handleButton("Preparing")}
                     >
                       Confirm Order
@@ -196,7 +193,7 @@ const Summary = ({ user }) => {
 
                   {order.status === "Preparing" && (
                     <button
-                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      className="bg-blue-400 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-blue-400 hover:bg-slate-800 hover:border-blue-400 hover:text-white rounded"
                       onClick={() => handleButton("Prepared")}
                     >
                       Prepared
@@ -205,7 +202,7 @@ const Summary = ({ user }) => {
 
                   {order.status === "Prepared" && (
                     <button
-                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      className="bg-blue-500 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-blue-500 hover:bg-slate-800 hover:border-blue-500 hover:text-white rounded"
                       onClick={() => handleButton("Served")}
                     >
                       Served
@@ -214,30 +211,12 @@ const Summary = ({ user }) => {
 
                   {order.status === "Served" && (
                     <button
-                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
+                      className="bg-green-500 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-green-500 hover:bg-slate-800 hover:border-green-500 hover:text-white rounded"
                       onClick={() => handleButton("Completed")}
                     >
                       Paid
                     </button>
                   )}
-                  {/* {order.status === "Paid" && (
-                    <button
-                      className="bg-blue-500 px-4 mx-2 py-2  text-white rounded"
-                      onClick={() => handleButton("")}
-                    >
-                      Paid
-                    </button>
-                  )} */}
-                  {/* {order.status !== "Completed" &&
-                    order.status !== "Cancelled" && 
-                     (
-                      <button
-                        className="bg-green-500 mx-2 px-4 py-2 rounded"
-                        onClick={() => handleButton("Completed")}
-                      >
-                        Mark as Paid
-                      </button>
-                    )} */}
                 </div>
               )}
             </div>

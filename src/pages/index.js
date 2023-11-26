@@ -104,9 +104,10 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
                       In cart: {cart[item.id] ? cart[item.id].qty : 0}
                     </p>
                     <button
+                      disabled={cart[item.id] && cart[item.id].qty > 9}
                       onClick={() => handleButton(item)}
                       className="flex m-2 text-sm text-white bg-slate-700 
-                  border-white border-2 py-1  px-2 focus:outline-none hover:bg-slate-600 rounded "
+                  border-white border-2 py-1  px-2 focus:outline-none hover:bg-slate-600 rounded disabled:hover:cursor-not-allowed"
                     >
                       Add
                     </button>

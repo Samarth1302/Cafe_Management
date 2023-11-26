@@ -84,7 +84,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
           theme: "dark",
         });
         clearCart();
-        router.push("/");
+        router.push("/userOrder");
       } else {
         toast.error("Did not receive server data", {
           position: "top-left",
