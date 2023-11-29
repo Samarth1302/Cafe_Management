@@ -14,7 +14,7 @@ const GET_ORDER = gql`
         price
         quantity
       }
-      orderApprovedAt
+      orderServedAt
       orderCompletedAt
       status
       totalAmount
@@ -28,7 +28,7 @@ const UPDATE_ORDER = gql`
     changeOrderStatus(orderId: $orderId, newStatus: $newStatus) {
       createdAt
       status
-      orderApprovedAt
+      orderServedAt
       orderCompletedAt
     }
   }
@@ -217,6 +217,12 @@ const Summary = ({ user }) => {
                       Paid
                     </button>
                   )}
+                  <button
+                    className="bg-red-400 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-red-400 hover:bg-slate-800 hover:border-red-400 hover:text-white rounded"
+                    onClick={() => handleButton("Cancelled")}
+                  >
+                    Cancel Order
+                  </button>
                 </div>
               )}
             </div>

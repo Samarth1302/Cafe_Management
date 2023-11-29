@@ -13,7 +13,7 @@ const GET_USER_ORDERS = gql`
       customerName
       status
       totalAmount
-      orderApprovedAt
+      orderServedAt
       orderCompletedAt
     }
   }

@@ -165,6 +165,7 @@ export default function App({ Component, pageProps }) {
         waitingTime={300}
         onLoaderFinished={() => setProgress(0)}
       />
+
       <RouteLoader />
       <ToastContainer
         position="top-left"
