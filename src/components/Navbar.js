@@ -39,9 +39,15 @@ const Navbar = ({
   const [cartCount, setCartCount] = useState(Object.keys(cart).length);
   const toggleCart = () => {
     setSidebar(!sidebar);
+    setHam(false);
   };
   const toggleHam = () => {
     setHam(!hamMenu);
+    setSidebar(false);
+  };
+  const closeBoth = () => {
+    setHam(false);
+    setSidebar(false);
   };
   useEffect(() => {
     setCartCount(Object.keys(cart).length);
@@ -66,11 +72,14 @@ const Navbar = ({
             <FiAlignJustify
               style={{ color: "#d3ad15", cursor: "pointer" }}
               onClick={toggleHam}
+              className="text-xl md:text-3xl"
             />
             {hamMenu && (
               <aside
                 id="sidebar-multi-level-sidebar"
-                className="fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0"
+                className={`fixed top-0 left-0 z-40 w-56 h-screen transition-transform -translate-x-full sm:translate-x-0 left-ham-menu ${
+                  hamMenu ? "translate-x-0" : ""
+                }`}
                 aria-label="Sidebar"
               >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-slate-800">
@@ -126,7 +135,7 @@ const Navbar = ({
             )}
           </div>
           <Link href={"/"}>
-            <div className=" text-yellow-400 md:text-3xl sm:text-sm">
+            <div className=" text-yellow-400 mr-2 md:text-3xl sm:text-sm">
               MICRO CAFE
             </div>
           </Link>
@@ -134,7 +143,7 @@ const Navbar = ({
         <div
           className={`cart items-center cursor-pointer absolute md:right-16  ${
             sidebar && "md:right-60 sm:right-2"
-          } md:top-5 sm:top-6 ml-40  flex`}
+          } md:top-5 sm:top-6 sm:right-0 ml-56 flex`}
         >
           <div className="mr-3 flex flex-col items-center">
             <p
@@ -161,24 +170,26 @@ const Navbar = ({
             </div>
           )}
           {!user.email && (
-            <button className="bg-yellow-400 px-2 py-1 rounded-md text-sm font-bold text-black mx-4">
+            <button className="bg-yellow-400 px-1 md:py-1 rounded-md text-xs  font-bold text-black mx-4">
               <Link href={"/login"}>Login</Link> /{" "}
-              <Link href={"/signup"}>Sign-up</Link>
+              <Link href={"/signup"}>Signup</Link>
             </button>
           )}{" "}
         </div>
         <div
           ref={ref}
-          className={`w-60 h-[100vh] sidecart top-0 overflow-y-scroll absolute bg-yellow-100 px-8 py-10 text-base transition-all ${
+          className={`w-60 h-[100vh] sidecart top-0 overflow-y-scroll absolute bg-slate-700 px-8 py-10 text-base transition-all text-slate-300 ${
             sidebar ? "right-0" : "-right-96"
           } `}
         >
-          <h2 className="font-bold text-xl text-center">Food Cart</h2>
+          <h2 className="font-bold text-xl text-center text-slate-50">
+            Food Cart
+          </h2>
           <span
             onClick={toggleCart}
             className="absolute top-5 right-2 cursor-pointer text-2xl"
           >
-            <AiOutlineCloseCircle style={{ color: "black" }} />
+            <AiOutlineCloseCircle style={{ color: "white" }} />
           </span>
           <ol className="list-decimal font-semibold ">
             {Object.keys(cart).length == 0 && (
@@ -217,7 +228,8 @@ const Navbar = ({
             <Link href={"/order"} legacyBehavior>
               <button
                 disabled={Object.keys(cart).length === 0 || !user.email}
-                className=" disabled:bg-yellow-200 flex mr-2 disabled:hover:cursor-not-allowed text-black bg-yellow-500 border-0 py-2 px-2 focus:outline-none hover:bg-yellow-600 rounded text-sm"
+                className=" disabled:bg-slate-800 disabled:text-white flex mr-2  disabled:hover:cursor-not-allowed bg-slate-200 border-0 py-2 px-1 
+              text-black focus:outline-none hover:bg-slate-400 rounded text-sm"
               >
                 Order
               </button>
@@ -225,8 +237,8 @@ const Navbar = ({
             <button
               disabled={Object.keys(cart).length === 0}
               onClick={clearCart}
-              className="  disabled:bg-yellow-200 flex disabled:hover:cursor-not-allowed bg-yellow-500 border-0 py-2 px-1 
-              text-black focus:outline-none hover:bg-yellow-600 rounded text-sm"
+              className="  disabled:bg-slate-800 disabled:text-white flex disabled:hover:cursor-not-allowed bg-slate-200 border-0 py-2 px-1 
+              text-black focus:outline-none hover:bg-slate-400 rounded text-sm"
             >
               Clear Cart
             </button>
