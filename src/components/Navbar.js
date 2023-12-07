@@ -19,23 +19,10 @@ const Navbar = ({
   total,
   logout,
 }) => {
-  useEffect(() => {
-    Object.keys(cart).length !== 0 && setSidebar(true);
-    let nonSide = [
-      "/order",
-      "/",
-      "/login",
-      "/signup",
-      "/userOrder",
-      "/ord/[slug]",
-    ];
-    if (nonSide.includes(router.pathname)) {
-      setSidebar(false);
-    }
-  }, []);
   const [sidebar, setSidebar] = useState(false);
   const router = useRouter();
   const [hamMenu, setHam] = useState(false);
+  const [hamHovered, setHamHovered] = useState(false);
   const [cartCount, setCartCount] = useState(Object.keys(cart).length);
   const toggleCart = () => {
     setSidebar(!sidebar);
@@ -70,9 +57,14 @@ const Navbar = ({
         <div className="relative left-5 mx-2 flex content-end md:mx-2">
           <div className="text-3xl items-center py-1 mr-5">
             <FiAlignJustify
-              style={{ color: "#d3ad15", cursor: "pointer" }}
+              className={`text-xl md:text-3xl ${hamHovered ? "hovered" : ""}`}
+              style={{
+                color: hamHovered ? "white" : "#d3ad15",
+                cursor: "pointer",
+              }}
               onClick={toggleHam}
-              className="text-xl md:text-3xl"
+              onMouseOver={() => setHamHovered(true)}
+              onMouseLeave={() => setHamHovered(false)}
             />
             {hamMenu && (
               <aside
@@ -95,27 +87,35 @@ const Navbar = ({
                   <ul className="space-y-6 mt-10 text-center justify-evenly text-lg text-white font-medium">
                     <Link href={"/"}>
                       <li className="my-3 hover:text-blue-400 hover:bg-slate-900 rounded-full">
-                        HOME
+                        Home
                       </li>
                     </Link>
-                    {user.role === "admin" && (
-                      <Link href={"/"}>
-                        <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
-                          EDIT MENU
-                        </li>
-                      </Link>
-                    )}
+
                     {user.role === "admin" && (
                       <Link href={"/employee"}>
-                        <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
-                          EMPLOYEES
+                        <li className="my-3 hover:text-teal-400 hover:bg-slate-900 rounded-full">
+                          Employees
                         </li>
                       </Link>
                     )}
                     {user.email && (
                       <Link href={"/userOrder"}>
-                        <li className="my-3 hover:text-blue-400 hover:bg-slate-900 rounded-full">
-                          ORDERS
+                        <li className="my-3 hover:text-green-400 hover:bg-slate-900 rounded-full">
+                          Orders
+                        </li>
+                      </Link>
+                    )}
+                    {user.role === "admin" && (
+                      <Link href={"/"}>
+                        <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
+                          Sales
+                        </li>
+                      </Link>
+                    )}
+                    {user.role === "admin" && (
+                      <Link href={"/menu"}>
+                        <li className="my-3 hover:text-orange-400 hover:bg-slate-900 rounded-full">
+                          Edit Menu
                         </li>
                       </Link>
                     )}
@@ -125,7 +125,7 @@ const Navbar = ({
                           className="my-3 hover:text-red-400 hover:bg-slate-900 rounded-full"
                           onClick={logout}
                         >
-                          LOGOUT
+                          Logout
                         </li>
                       </Link>
                     )}
@@ -170,9 +170,8 @@ const Navbar = ({
             </div>
           )}
           {!user.email && (
-            <button className="bg-yellow-400 px-1 md:py-1 rounded-md text-xs  font-bold text-black mx-4">
-              <Link href={"/login"}>Login</Link> /{" "}
-              <Link href={"/signup"}>Signup</Link>
+            <button className="bg-yellow-400 px-2 md:py-1 rounded-md text-sm  font-bold text-black mx-4">
+              <Link href={"/login"}>Login</Link>
             </button>
           )}{" "}
         </div>

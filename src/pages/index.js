@@ -75,7 +75,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
         <meta name="keywords" content="" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-8 mx-auto overflow-x-hidden">
+      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-6 mx-auto overflow-x-hidden">
         {loadingData ? (
           <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-slate-950">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
@@ -117,8 +117,8 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
             ))}
           </div>
         )}
-        <div className="mt-4 justify-center ">
-          {!loadingData && (
+        <div className="justify-center ">
+          {!loadingData && items.length !== 0 && (
             <Link href={"/order"} legacyBehavior>
               <button
                 disabled={Object.keys(cart).length === 0 || !user.email}

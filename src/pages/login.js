@@ -21,6 +21,14 @@ const Login = () => {
       }
     }
   `;
+  const FORGOT_PASSWORD = gql`
+    mutation ForgotPassword($email: String!) {
+      forgotPassword(email: $email) {
+        success
+        message
+      }
+    }
+  `;
 
   const [loginUser] = useMutation(LOGIN_USER);
   const handleChange = (e) => {
@@ -37,6 +45,7 @@ const Login = () => {
   const iconStyle = {
     color: "yellow",
   };
+  const [forgotPassword] = useMutation(FORGOT_PASSWORD);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -83,7 +92,41 @@ const Login = () => {
         progress: undefined,
         theme: "dark",
       });
+      if (error.message.includes("Can't find such user")) {
+        router.push("/signup");
+      }
       setPass("");
+    }
+  };
+  const handleForgotPassword = async () => {
+    try {
+      const { data } = await forgotPassword({
+        variables: { email },
+      });
+
+      if (data.forgotPassword.success) {
+        toast.success(data.forgotPassword.message, {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
   return (
@@ -164,11 +207,12 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <Link href="/forget" legacyBehavior>
-                    <a className="text-sm font-medium text-primary-600 hover:underline text-yellow-300">
-                      Forgot password?
-                    </a>
-                  </Link>
+                  <p
+                    onClick={handleForgotPassword}
+                    className="text-sm font-medium text-primary-600 hover:underline text-yellow-300 cursor-pointer"
+                  >
+                    Forgot password?
+                  </p>
                 </div>
                 <div className="flex justify-center">
                   <button
