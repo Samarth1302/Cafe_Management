@@ -5,6 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Confirm from "../components/Confirm";
 
 const GET_ITEMS = gql`
   query AllItems {
@@ -245,6 +246,9 @@ const MenuPage = ({ user }) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
   const [loadingData, setLoadingData] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const { error, data } = useQuery(GET_ITEMS);
@@ -276,11 +280,16 @@ const MenuPage = ({ user }) => {
     }
   }, [error]);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (empID) => {
+    setItemToDelete(empID);
+    setConfirmDelete(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
       const { data } = await removeItem({
         variables: {
-          itemId: id,
+          itemId: itemToDelete,
         },
         context: {
           headers: {
@@ -288,35 +297,20 @@ const MenuPage = ({ user }) => {
           },
         },
       });
-      if (data && data.deleteItem) {
-        const deletedItemId = data.deleteItem._id;
-
-        if (deletedItemId === null) {
-          toast.success("Item removed from menu", {
-            position: "top-left",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-          router.push("/menu");
-        } else {
-          toast.error("Failed to delete item", {
-            position: "top-left",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        }
+      if (data && data.deleteItem && data.deleteItem.id === null) {
+        toast.success("Item removed from menu", {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        router.push("/menu");
       } else {
-        toast.error("Invalid response from the server", {
+        toast.error("Failed to delete item", {
           position: "top-left",
           autoClose: 1500,
           hideProgressBar: false,
@@ -338,7 +332,15 @@ const MenuPage = ({ user }) => {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setConfirmDelete(false);
+      setItemToDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDelete(false);
+    setItemToDelete(null);
   };
 
   const handleAddItem = async () => {
@@ -358,28 +360,36 @@ const MenuPage = ({ user }) => {
         ) : (
           user.role === "admin" && (
             <>
-              <div className="flex justify-center flex-wrap">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {items &&
                   items.map((item) => (
                     <div
                       key={item.id}
-                      className="lg:w-1/5 md:w-1/3 p-4 w-full sm:w-1/2 h-48 cursor-pointer shadow-lg shadow-slate-800 m-5 rounded-lg border-slate-800 border-r-2"
+                      className="bg-slate-800 p-4 rounded-lg shadow-lg flex flex-col md:flex-row"
                     >
-                      <div className="flex mt-4 text-center">
-                        <div className="mr-4">
-                          <Image
-                            className="m-auto block"
-                            src={item.itemImage}
-                            alt={item.itemName}
-                            width={200}
-                            height={140}
-                          ></Image>
-                        </div>
-                        <div className="text-left">
-                          <h3 className="text-white text-lg">
+                      <div className="md:mr-4 mb-4 md:mb-0 max-w-md">
+                        <Image
+                          className="m-auto block"
+                          src={item.itemImage}
+                          alt={item.itemName}
+                          width={200}
+                          height={140}
+                        />
+                      </div>
+                      <div className="flex-grow flex flex-col justify-between">
+                        <div>
+                          <h3 className="mt-3 font-semibold text-white text-lg">
                             {item.itemName}
                           </h3>
-                          <p className="mt-1 text-base">₹ {item.itemPrice}</p>
+                          <p className="text-gray-300">{item.itemDesc}</p>
+                          <p className="text-base text-gray-300">
+                            ( {item.itemGrp} )
+                          </p>
+                          <p className="text-base font-semibold">
+                            Price: ₹ {item.itemPrice}
+                          </p>
+                        </div>
+                        <div className="mt-4 flex justify-end">
                           <button
                             onClick={() => handleDelete(item.id)}
                             className="bg-red-500 text-white text-lg px-4 py-2 rounded focus:bg-slate-900 focus:border-2 focus:border-red-600 focus:text-red-500"
@@ -410,6 +420,13 @@ const MenuPage = ({ user }) => {
           )
         )}
       </div>
+      {confirmDelete && (
+        <Confirm
+          message="Are you sure you want to delete this item?"
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
     </>
   );
 };

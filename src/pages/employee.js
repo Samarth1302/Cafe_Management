@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useRouter } from "next/router";
+import Confirm from "../components/Confirm";
 
 const GET_EMPLOYEES = gql`
   query GetEmployees {
@@ -239,6 +240,9 @@ const EmployeePage = ({ user }) => {
   const check = typeof window !== "undefined" && window.localStorage;
   const token = check ? JSON.parse(localStorage.getItem("myUser")) : "";
 
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [employeeToDelete, setEmployeeToDelete] = useState(null);
+
   const [loadingData, setLoadingData] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const { error, data } = useQuery(GET_EMPLOYEES);
@@ -271,10 +275,15 @@ const EmployeePage = ({ user }) => {
   }, [error]);
 
   const handleDelete = async (empID) => {
+    setEmployeeToDelete(empID);
+    setConfirmDelete(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      const { data } = await delEmployeee({
+      await delEmployeee({
         variables: {
-          userId: empID,
+          userId: employeeToDelete,
         },
         context: {
           headers: {
@@ -282,45 +291,19 @@ const EmployeePage = ({ user }) => {
           },
         },
       });
-      if (data && data.deleteEmployee) {
-        const deletedEmployeeId = data.deleteEmployee.id;
 
-        if (deletedEmployeeId === null) {
-          toast.success("Employee removed from the system", {
-            position: "top-left",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-          router.push("/employee");
-        } else {
-          toast.error("Failed to remove employee", {
-            position: "top-left",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-          });
-        }
-      } else {
-        toast.error("Invalid response from the server", {
-          position: "top-left",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }
+      toast.success("Employee removed from the system", {
+        position: "top-left",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+
+      router.push("/employee");
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
@@ -332,7 +315,15 @@ const EmployeePage = ({ user }) => {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setConfirmDelete(false);
+      setEmployeeToDelete(null);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setConfirmDelete(false);
+    setEmployeeToDelete(null);
   };
   const handleButton = async () => {
     setShowForm(true);
@@ -393,6 +384,13 @@ const EmployeePage = ({ user }) => {
           )
         )}
       </div>
+      {confirmDelete && (
+        <Confirm
+          message="Are you sure you want to delete this employee?"
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
     </>
   );
 };
