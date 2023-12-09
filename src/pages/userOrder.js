@@ -85,7 +85,7 @@ const UserOrder = () => {
         <title>User Orders</title>
         <meta name="description" content="." />
         <meta name="keywords" content="" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/fav.ico" />
       </Head>
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
         {loadingData ? (

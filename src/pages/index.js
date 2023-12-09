@@ -73,7 +73,7 @@ const Home = ({ user, cart, addtoCart, removefromCart }) => {
         <title>Cafe-management</title>
         <meta name="description" content="." />
         <meta name="keywords" content="" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/fav.ico" />
       </Head>
       <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-6 mx-auto overflow-x-hidden">
         {loadingData ? (
