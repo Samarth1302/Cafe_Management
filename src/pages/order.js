@@ -116,7 +116,7 @@ const Order = ({ user, cart, total, addtoCart, removefromCart, clearCart }) => {
       <Head>
         <title>Your Order</title>
         <meta name="description" content="Your order details." />
-        <link rel="icon" href="/fav.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       {Object.keys(cart).length === 0 ? (
         <div className="min-h-screen flex justify-center text-center bg-slate-900">

@@ -120,7 +120,7 @@ const Summary = ({ user }) => {
         <title>Order Summary</title>
         <meta name="description" content="Order summary details" />
         <meta name="keywords" content="" />
-        <link rel="icon" href="/fav.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-8">
         {loadingData ? (

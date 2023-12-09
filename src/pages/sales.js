@@ -17,13 +17,20 @@ const GET_MONTHLY_SALES = gql`
       numberOfOrdersMonthly
       totalSales
       year
+      avgOrderValue
+      bestSellingCategory
+      busyTime
+      topSellingItems {
+        itemName
+        totalQuantity
+      }
     }
   }
 `;
 
 const Sales = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const selectedMonth = selectedDate.getMonth() + 1;
+  const selectedMonth = selectedDate.getMonth();
   const selectedYear = selectedDate.getFullYear();
 
   const { loading, error, data, refetch } = useQuery(GET_MONTHLY_SALES, {
@@ -46,7 +53,7 @@ const Sales = () => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
     refetch({
-      selectedMonth: date.getMonth(),
+      selectedMonth: date.getMonth() + 1,
       selectedYear: date.getFullYear(),
     });
   };
@@ -61,64 +68,105 @@ const Sales = () => {
     }
     return null;
   };
+  const formatBusiestTimeIST = () => {
+    if (data && data.getMonthlySales) {
+      const busiestTimeInHours = data.getMonthlySales.busyTime;
+      const busiestTimeIST = new Date();
+      busiestTimeIST.setHours(busiestTimeInHours, 0, 0);
+      const formattedTimeIST = busiestTimeIST.toLocaleTimeString("en-IN", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+        timeZone: "Asia/Kolkata",
+      });
+
+      return formattedTimeIST;
+    }
+    return null;
+  };
   return (
-    <>
-      <div className="min-h-screen bg-slate-900 text-white flex items-center justify-center flex-wrap px-5 py-6 mx-auto overflow-x-hidden">
-        {loading ? (
-          <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-slate-950">
-            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center px-5 py-6 mx-auto">
+      {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen z-[99999999999999] flex items-center justify-center bg-slate-950">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+        </div>
+      )}
+      {!loading && (
+        <div className="w-full max-w-3xl -mt-32 overflow-y-auto">
+          <p className="text-3xl font-bold mb-6 text-center">
+            Monthly Sales Data Dashboard
+          </p>
+          <div className="flex justify-center mb-10">
+            <DatePicker
+              selected={selectedDate}
+              className="bg-slate-800 px-4 py-2 text-center border border-white rounded-md mr-4"
+              onChange={handleDateChange}
+              showMonthYearPicker
+              dateFormat="MM/yyyy"
+              style={{ background: "#333", color: "#fff" }}
+            />
           </div>
-        ) : (
-          <div className="w-full max-w-2xl overflow-y-auto flex-auto">
-            <p className="text-white text-2xl text-center">
-              Monthly Sales Data Dashboard
-            </p>
-            <div className="flex justify-center mt-4">
-              <DatePicker
-                selected={selectedDate}
-                className="bg-slate-800 px-2 py-1 text-center w-36 border border-white rounded-md mr-4"
-                onChange={handleDateChange}
-                showMonthYearPicker
-                dateFormat="MM/yyyy"
-                style={{ background: "#333", color: "#fff" }}
-              />
-            </div>
-            {data && data.getMonthlySales ? (
-              <div className="mt-6 space-y-4 text-center">
-                <p className="text-lg">
+          {data && data.getMonthlySales ? (
+            <div className="space-y-6 text-center">
+              <p className="text-lg font-semibold">
+                {new Date(selectedDate).toLocaleString("default", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+              <div className="col-span-2 sm:col-span-1">
+                <p className="text-lg font-semibold">
                   Total Sales: {data.getMonthlySales.totalSales}
                 </p>
-                <p className="text-lg">
+                <p className="text-lg font-semibold">
                   Number of Orders: {data.getMonthlySales.numberOfOrdersMonthly}
                 </p>
-                <p className="text-lg">
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <p className="text-lg font-semibold">
                   Average Order Completion Time:{" "}
-                  {getRoundedAverageTime()?.hours} hours{" "}
-                  {getRoundedAverageTime()?.minutes} minutes
-                </p>
-                <p className="text-lg">
-                  Month: {data.getMonthlySales.month}, Year:{" "}
-                  {data.getMonthlySales.year}
+                  {getRoundedAverageTime()?.hours === 0
+                    ? `${getRoundedAverageTime()?.minutes} minutes`
+                    : `${getRoundedAverageTime()?.hours} hours ${
+                        getRoundedAverageTime()?.minutes
+                      } minutes`}
                 </p>
               </div>
-            ) : (
               <div>
-                <Image
-                  src="/no-data.jpg"
-                  alt="No sales data for this month"
-                  width={300}
-                  height={180}
-                  className="mx-auto mt-6"
-                />
-                <p className="text-center justify-center text-white text-lg mt-6 mb-6">
-                  No sales data available for the selected month.
-                </p>
+                <p className="text-lg font-semibold">Top Selling Items</p>
+                <ul>
+                  {data.getMonthlySales.topSellingItems.map((item) => (
+                    <li key={item.itemName} className="text-sm">
+                      {item.itemName} ({item.totalQuantity})
+                    </li>
+                  ))}
+                </ul>
               </div>
-            )}
-          </div>
-        )}
-      </div>
-    </>
+              <p className="text-lg font-semibold">
+                Best Selling Category:{" "}
+                {data.getMonthlySales.bestSellingCategory}
+              </p>
+              <p className="text-lg font-semibold">
+                Busiest Time: {formatBusiestTimeIST()} IST
+              </p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center mt-6">
+              <Image
+                src="/no-data.jpg"
+                alt="No sales data for this month"
+                width={300}
+                height={180}
+                className="mx-auto"
+              />
+              <p className="text-lg text-white mt-6">
+                No sales data available for the selected month.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
