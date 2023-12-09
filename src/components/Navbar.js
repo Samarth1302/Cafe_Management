@@ -120,9 +120,9 @@ const Navbar = ({
                       </Link>
                     )}
                     {user.email && (
-                      <Link href={"/"}>
+                      <Link href={"/password"}>
                         <li className="my-3 hover:text-fuchsia-400 hover:bg-slate-900 rounded-full">
-                          Security
+                          Password
                         </li>
                       </Link>
                     )}
