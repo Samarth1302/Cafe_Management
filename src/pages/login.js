@@ -45,6 +45,7 @@ const Login = () => {
   const iconStyle = {
     color: "yellow",
   };
+
   const [forgotPassword] = useMutation(FORGOT_PASSWORD);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,7 +99,8 @@ const Login = () => {
       setPass("");
     }
   };
-  const handleForgotPassword = async () => {
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
     try {
       const { data } = await forgotPassword({
         variables: { email },
@@ -207,12 +209,14 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <p
+                  <button
+                    type="button"
                     onClick={handleForgotPassword}
-                    className="text-sm font-medium text-primary-600 hover:underline text-yellow-300 cursor-pointer"
+                    disabled={!email}
+                    className="text-sm font-medium text-primary-600 hover:underline text-yellow-300 cursor-pointer disabled:hover:cursor-not-allowed"
                   >
-                    Forgot password?
-                  </p>
+                    Forgot password ?
+                  </button>
                 </div>
                 <div className="flex justify-center">
                   <button

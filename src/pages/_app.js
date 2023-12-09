@@ -204,6 +204,7 @@ export default function App({ Component, pageProps }) {
           {...pageProps}
         />
       </ApolloProvider>
+      <Footer />
       {showLogoutConfirmation && (
         <Confirm
           message="Are you sure you want to logout?"
@@ -211,7 +212,6 @@ export default function App({ Component, pageProps }) {
           onCancel={cancelLogout}
         />
       )}
-      <Footer />
     </>
   );
 }

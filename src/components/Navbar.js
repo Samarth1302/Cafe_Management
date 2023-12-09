@@ -106,7 +106,7 @@ const Navbar = ({
                       </Link>
                     )}
                     {user.role === "admin" && (
-                      <Link href={"/"}>
+                      <Link href={"/sales"}>
                         <li className="my-3 hover:text-yellow-400 hover:bg-slate-900 rounded-full">
                           Sales
                         </li>
@@ -116,6 +116,13 @@ const Navbar = ({
                       <Link href={"/menu"}>
                         <li className="my-3 hover:text-orange-400 hover:bg-slate-900 rounded-full">
                           Edit Menu
+                        </li>
+                      </Link>
+                    )}
+                    {user.email && (
+                      <Link href={"/"}>
+                        <li className="my-3 hover:text-fuchsia-400 hover:bg-slate-900 rounded-full">
+                          Security
                         </li>
                       </Link>
                     )}
@@ -222,7 +229,7 @@ const Navbar = ({
               );
             })}
           </ol>
-          <span className="total font-bold">SubTotal: ₹{total}</span>
+          <span className="font-bold">SubTotal: ₹ {total}</span>
           <div className="flex my-4">
             <Link href={"/order"} legacyBehavior>
               <button
@@ -243,8 +250,8 @@ const Navbar = ({
             </button>
           </div>
           {!user.email && (
-            <span className="text-red-700 text-sm">
-              Please login to buy a product
+            <span className="text-red-400 font-bold text-sm">
+              Please login to add items
             </span>
           )}
         </div>

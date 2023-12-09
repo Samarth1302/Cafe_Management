@@ -360,6 +360,9 @@ const MenuPage = ({ user }) => {
         ) : (
           user.role === "admin" && (
             <>
+              <p className="text-white text-2xl text-center mb-10">
+                Menu Items
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {items &&
                   items.map((item) => (

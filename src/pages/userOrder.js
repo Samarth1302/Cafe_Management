@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
+import Image from "next/image";
 
 const GET_USER_ORDERS = gql`
   query UserOrders {
@@ -94,68 +95,83 @@ const UserOrder = () => {
         ) : (
           <div className="w-full max-w-2xl overflow-y-auto flex-auto">
             <p className="text-white text-2xl text-center">Orders</p>
-            {orders.map((order) => (
-              <Link key={order.id} href={`/ord/${order.id}`}>
-                <div
-                  key={order.id}
-                  className="my-4 p-4 bg-slate-800 rounded-lg"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="text-left lg:pl-10">
-                      <h3 className="text-white text-base">
-                        Name:{" "}
-                        {order.customerName.charAt(0).toUpperCase() +
-                          order.customerName.slice(1)}
-                      </h3>
-                      <p className="text-base">
-                        Date: {formatStringToDateString(order.createdAt)}
-                      </p>
-                      <p className="mt-1 text-sm">ID: {order.id}</p>
-                    </div>
-                    <div className="text-right justify-normal lg:pr-8 py-2">
-                      {order.status === "Pending" && (
-                        <p className="text-base text-yellow-400">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
+            {orders.length === 0 ? (
+              <div className="text-center justify-center">
+                <Image
+                  src="/no-data.jpg"
+                  alt="No sales data for this month"
+                  width={300}
+                  height={180}
+                  className="mx-auto mt-10"
+                />
+                <p className="text-white text-xl mt-6 mb-6">
+                  No recent orders found. Go to Home and start Ordering!
+                </p>
+              </div>
+            ) : (
+              orders.map((order) => (
+                <Link key={order.id} href={`/ord/${order.id}`}>
+                  <div
+                    key={order.id}
+                    className="my-4 p-4 bg-slate-800 rounded-lg"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-left lg:pl-10">
+                        <h3 className="text-white text-base">
+                          Name:{" "}
+                          {order.customerName.charAt(0).toUpperCase() +
+                            order.customerName.slice(1)}
+                        </h3>
+                        <p className="text-base">
+                          Date: {formatStringToDateString(order.createdAt)}
                         </p>
-                      )}
-                      {order.status === "Completed" && (
-                        <p className="text-base text-green-500">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </p>
-                      )}
-                      {order.status === "Preparing" && (
-                        <p className="text-base text-blue-300">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </p>
-                      )}
-                      {order.status === "Prepared" && (
-                        <p className="text-base text-blue-400">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </p>
-                      )}
-                      {order.status === "Served" && (
-                        <p className="text-base text-blue-500">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </p>
-                      )}
-                      {order.status === "Cancelled" && (
-                        <p className="text-base text-red-700">
-                          {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
-                        </p>
-                      )}
+                        <p className="mt-1 text-sm">ID: {order.id}</p>
+                      </div>
+                      <div className="text-right justify-normal lg:pr-8 py-2">
+                        {order.status === "Pending" && (
+                          <p className="text-base text-yellow-400">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </p>
+                        )}
+                        {order.status === "Completed" && (
+                          <p className="text-base text-green-500">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </p>
+                        )}
+                        {order.status === "Preparing" && (
+                          <p className="text-base text-blue-300">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </p>
+                        )}
+                        {order.status === "Prepared" && (
+                          <p className="text-base text-blue-400">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </p>
+                        )}
+                        {order.status === "Served" && (
+                          <p className="text-base text-blue-500">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </p>
+                        )}
+                        {order.status === "Cancelled" && (
+                          <p className="text-base text-red-700">
+                            {order.status.charAt(0).toUpperCase() +
+                              order.status.slice(1)}
+                          </p>
+                        )}
 
-                      <p className="text-sm ">Total: ₹{order.totalAmount}</p>
+                        <p className="text-sm ">Total: ₹{order.totalAmount}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))
+            )}
           </div>
         )}
       </div>
