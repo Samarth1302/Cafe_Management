@@ -5,10 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { gql, useMutation } from "@apollo/client";
 import Head from "next/head";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { useRouter } from "next/router";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const router = useRouter();
 
   const CHANGE_PASSWORD = gql`
     mutation ChangePassword($currentPassword: String, $newPassword: String) {
