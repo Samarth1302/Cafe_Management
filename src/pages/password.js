@@ -30,33 +30,8 @@ const ChangePassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await changePassword({
-        variables: { currentPassword, newPassword },
-        context: {
-          headers: {
-            authorization: token || "",
-          },
-        },
-      });
-
-      if (data.changePassword.success) {
-        toast.success(data.changePassword.message, {
-          position: "top-left",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        router.push("/");
-        setCurrentPassword("");
-        setNewPassword("");
-      }
-    } catch (error) {
-      toast.error(error.message, {
+    if (currentPassword == newPassword) {
+      toast.error("New password should be different than current pasword", {
         position: "top-left",
         autoClose: 1500,
         hideProgressBar: false,
@@ -66,6 +41,44 @@ const ChangePassword = () => {
         progress: undefined,
         theme: "dark",
       });
+    } else {
+      try {
+        const { data } = await changePassword({
+          variables: { currentPassword, newPassword },
+          context: {
+            headers: {
+              authorization: token || "",
+            },
+          },
+        });
+
+        if (data.changePassword.success) {
+          toast.success(data.changePassword.message, {
+            position: "top-left",
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          router.push("/");
+          setCurrentPassword("");
+          setNewPassword("");
+        }
+      } catch (error) {
+        toast.error(error.message, {
+          position: "top-left",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     }
   };
 
