@@ -108,7 +108,7 @@ const Sales = () => {
           </div>
           {data && data.getMonthlySales ? (
             <div className="space-y-6 text-center">
-              <p className="text-lg font-semibold">
+              <p className="text-xl font-semibold">
                 {new Date(selectedDate).toLocaleString("default", {
                   month: "long",
                   year: "numeric",
@@ -116,7 +116,7 @@ const Sales = () => {
               </p>
               <div className="col-span-2 sm:col-span-1">
                 <p className="text-lg font-semibold">
-                  Total Sales: {data.getMonthlySales.totalSales}
+                  Total Sales: ₹ {data.getMonthlySales.totalSales}
                 </p>
                 <p className="text-lg font-semibold">
                   Number of Orders: {data.getMonthlySales.numberOfOrdersMonthly}
@@ -124,12 +124,23 @@ const Sales = () => {
               </div>
               <div className="col-span-2 sm:col-span-1">
                 <p className="text-lg font-semibold">
-                  Average Order Completion Time:{" "}
+                  Average Serve Time:{" "}
                   {getRoundedAverageTime()?.hours === 0
                     ? `${getRoundedAverageTime()?.minutes} minutes`
                     : `${getRoundedAverageTime()?.hours} hours ${
                         getRoundedAverageTime()?.minutes
                       } minutes`}
+                </p>
+                <p className="text-lg font-semibold">
+                  Best Selling Category:{" "}
+                  {data.getMonthlySales.bestSellingCategory}
+                </p>
+                <p className="text-lg font-semibold">
+                  Busiest Time: {formatBusiestTimeIST()} IST
+                </p>
+                <p className="text-lg font-semibold">
+                  Average Order Value: ₹
+                  {data.getMonthlySales.avgOrderValue.toFixed(2)}
                 </p>
               </div>
               <div>
@@ -142,13 +153,6 @@ const Sales = () => {
                   ))}
                 </ul>
               </div>
-              <p className="text-lg font-semibold">
-                Best Selling Category:{" "}
-                {data.getMonthlySales.bestSellingCategory}
-              </p>
-              <p className="text-lg font-semibold">
-                Busiest Time: {formatBusiestTimeIST()} IST
-              </p>
             </div>
           ) : (
             <div className="flex flex-col items-center mt-6">
