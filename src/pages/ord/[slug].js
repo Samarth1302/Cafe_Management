@@ -217,12 +217,14 @@ const Summary = ({ user }) => {
                       Paid
                     </button>
                   )}
-                  <button
-                    className="bg-red-400 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-red-400 hover:bg-slate-800 hover:border-red-400 hover:text-white rounded"
-                    onClick={() => handleButton("Cancelled")}
-                  >
-                    Cancel Order
-                  </button>
+                  {order.status === "Pending" && (
+                    <button
+                      className="bg-red-400 px-4 mx-2 my-3 py-2 font-bold border-2  text-black border-red-400 hover:bg-slate-800 hover:border-red-400 hover:text-white rounded"
+                      onClick={() => handleButton("Cancelled")}
+                    >
+                      Cancel Order
+                    </button>
+                  )}
                 </div>
               )}
             </div>
