@@ -51,6 +51,7 @@ const ChangePassword = () => {
           progress: undefined,
           theme: "dark",
         });
+        router.push("/");
         setCurrentPassword("");
         setNewPassword("");
       }
