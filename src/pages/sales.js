@@ -28,7 +28,7 @@ const GET_MONTHLY_SALES = gql`
   }
 `;
 
-const Sales = () => {
+const Sales = (user) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const selectedMonth = selectedDate.getMonth();
   const selectedYear = selectedDate.getFullYear();
@@ -91,7 +91,7 @@ const Sales = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
         </div>
       )}
-      {!loading && (
+      {!loading && user.role == "admin" && (
         <div className="w-full max-w-3xl -mt-32 overflow-y-auto">
           <p className="text-3xl font-bold mb-6 text-center">
             Monthly Sales Data Dashboard
