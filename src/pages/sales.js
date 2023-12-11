@@ -28,7 +28,7 @@ const GET_MONTHLY_SALES = gql`
   }
 `;
 
-const Sales = (user) => {
+const Sales = ({ user }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const selectedMonth = selectedDate.getMonth();
   const selectedYear = selectedDate.getFullYear();
